@@ -1,0 +1,28 @@
+{
+  "name": "pwc-lite",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Lightweight headless paper discovery for personal use.",
+  "bin": {
+    "pwc": "./src/cli.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "pwc": "bun src/cli.ts",
+    "test": "bun test",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run fmt:check && bun run lint && bun run typecheck"
+  },
+  "devDependencies": {
+    "@oxlint/plugins": "1.90.0",
+    "@types/bun": "^1.4.4",
+    "oxfmt": "^0.75.0",
+    "oxlint": "1.90.0",
+    "typescript": "^7.0.2"
+  },
+  "packageManager": "bun@1.4.3"
+}
