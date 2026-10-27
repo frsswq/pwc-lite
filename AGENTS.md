@@ -4,7 +4,11 @@
 
 pwc-lite is a lightweight headless paper discovery tool for personal use.
 It uses Bun, TypeScript, and SQLite.
-Read `PLAN.md` for the architecture and the phases.
+GitHub issues track the design and the work.
+Read the design in issue #1 (https://github.com/frsswq/pwc-lite/issues/1).
+Each task is an issue in a phase milestone.
+Read the task issue and its acceptance criteria before you start the task.
+Record changed design decisions in issue #1.
 
 ## Commands
 

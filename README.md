@@ -6,7 +6,8 @@ It takes ideas from [huggingface/paperswithcode](https://github.com/huggingface/
 ## Status
 
 The repository contains the toolchain only.
-Read `PLAN.md` for the planned work.
+The design is in [issue #1](https://github.com/frsswq/pwc-lite/issues/1).
+The planned work is in the [milestones](https://github.com/frsswq/pwc-lite/milestones).
 
 ## Setup
 
