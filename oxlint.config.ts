@@ -24,6 +24,8 @@ export default defineConfig({
   ],
   jsPlugins: [{ name: "anti-slop", specifier: "./tools/oxlint/anti-slop/index.ts" }],
   rules: {
+    // Rate-limited requests, retries, and ordered ingest must run one at a time.
+    "no-await-in-loop": "off",
     "oxc/no-accumulating-spread": "error",
     "anti-slop/no-array-filter-map": "error",
     "anti-slop/no-reduce-accumulator-copy": "error",

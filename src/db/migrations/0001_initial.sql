@@ -6,7 +6,7 @@ CREATE TABLE papers (
   version INTEGER,
   title TEXT NOT NULL,
   abstract TEXT NOT NULL,
-  author_names TEXT NOT NULL,
+  authors TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(authors) AND json_type(authors) = 'array'),
   published_at TEXT,
   updated_at TEXT,
   primary_category TEXT,
@@ -20,21 +20,6 @@ CREATE TABLE papers (
 CREATE INDEX papers_published_at ON papers (published_at);
 --> statement-breakpoint
 CREATE INDEX papers_ingested_at ON papers (ingested_at);
---> statement-breakpoint
-CREATE TABLE authors (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL,
-  name_key TEXT NOT NULL UNIQUE
-) STRICT;
---> statement-breakpoint
-CREATE TABLE paper_authors (
-  paper_id TEXT NOT NULL REFERENCES papers (id) ON DELETE CASCADE,
-  position INTEGER NOT NULL CHECK (position >= 0),
-  author_id INTEGER NOT NULL REFERENCES authors (id),
-  PRIMARY KEY (paper_id, position)
-) STRICT;
---> statement-breakpoint
-CREATE INDEX paper_authors_author_id ON paper_authors (author_id);
 --> statement-breakpoint
 CREATE TABLE links (
   paper_id TEXT NOT NULL REFERENCES papers (id) ON DELETE CASCADE,
@@ -68,25 +53,25 @@ CREATE TABLE ingest_cursors (
 CREATE VIRTUAL TABLE papers_fts USING fts5 (
   title,
   abstract,
-  author_names,
+  authors,
   content = 'papers',
   content_rowid = 'pk',
   tokenize = 'porter unicode61 remove_diacritics 2'
 );
 --> statement-breakpoint
 CREATE TRIGGER papers_fts_after_insert AFTER INSERT ON papers BEGIN
-  INSERT INTO papers_fts (rowid, title, abstract, author_names)
-  VALUES (new.pk, new.title, new.abstract, new.author_names);
+  INSERT INTO papers_fts (rowid, title, abstract, authors)
+  VALUES (new.pk, new.title, new.abstract, new.authors);
 END;
 --> statement-breakpoint
 CREATE TRIGGER papers_fts_after_delete AFTER DELETE ON papers BEGIN
-  INSERT INTO papers_fts (papers_fts, rowid, title, abstract, author_names)
-  VALUES ('delete', old.pk, old.title, old.abstract, old.author_names);
+  INSERT INTO papers_fts (papers_fts, rowid, title, abstract, authors)
+  VALUES ('delete', old.pk, old.title, old.abstract, old.authors);
 END;
 --> statement-breakpoint
-CREATE TRIGGER papers_fts_after_update AFTER UPDATE OF title, abstract, author_names ON papers BEGIN
-  INSERT INTO papers_fts (papers_fts, rowid, title, abstract, author_names)
-  VALUES ('delete', old.pk, old.title, old.abstract, old.author_names);
-  INSERT INTO papers_fts (rowid, title, abstract, author_names)
-  VALUES (new.pk, new.title, new.abstract, new.author_names);
+CREATE TRIGGER papers_fts_after_update AFTER UPDATE OF title, abstract, authors ON papers BEGIN
+  INSERT INTO papers_fts (papers_fts, rowid, title, abstract, authors)
+  VALUES ('delete', old.pk, old.title, old.abstract, old.authors);
+  INSERT INTO papers_fts (rowid, title, abstract, authors)
+  VALUES (new.pk, new.title, new.abstract, new.authors);
 END;

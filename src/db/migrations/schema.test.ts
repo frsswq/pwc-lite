@@ -17,11 +17,11 @@ const decodeObject = (row: SqlRow) => {
 const idRow = z.object({ id: z.string() });
 const decodeId = (row: SqlRow) => idRow.parse(row).id;
 
-const insertPaper = (id: string, title: string, abstract: string, authorNames: string) =>
+const insertPaper = (id: string, title: string, abstract: string, author: string) =>
   sql(
-    `INSERT INTO papers (id, title, abstract, author_names, added_via, ingested_at)
-     VALUES (?, ?, ?, ?, 'manual', '2026-10-27T00:00:00.000Z')`,
-    [id, title, abstract, authorNames],
+    `INSERT INTO papers (id, title, abstract, authors, added_via, ingested_at)
+     VALUES (?, ?, ?, json_array(?), 'manual', '2026-10-27T00:00:00.000Z')`,
+    [id, title, abstract, author],
   );
 
 const search = async (db: Database, query: string) =>
@@ -55,14 +55,11 @@ describe("0001_initial", () => {
 
     expect(objects).toEqual([
       "index:links_kind_external_id",
-      "index:paper_authors_author_id",
       "index:papers_ingested_at",
       "index:papers_published_at",
       "index:signals_observed_on",
-      "table:authors",
       "table:ingest_cursors",
       "table:links",
-      "table:paper_authors",
       "table:papers",
       "table:papers_fts",
       "table:schema_migrations",
@@ -87,7 +84,7 @@ describe("0001_initial", () => {
     expect(await search(db, "distillation")).toEqual(["2610.00001"]);
     expect(await search(db, "transformer")).toEqual(["2610.00002"]);
     expect(await search(db, "turing")).toEqual(["2610.00002"]);
-    expect(await search(db, "author_names:lovelace")).toEqual(["2610.00001"]);
+    expect(await search(db, "authors:lovelace")).toEqual(["2610.00001"]);
   });
 
   test("keeps the index current after an update or a delete", async () => {
@@ -110,8 +107,6 @@ describe("0001_initial", () => {
   test("deletes dependent rows with the paper", async () => {
     await db.batch([
       insertPaper("2610.00001", "A", "B", "C"),
-      sql("INSERT INTO authors (name, name_key) VALUES ('C', 'c')"),
-      sql("INSERT INTO paper_authors (paper_id, position, author_id) VALUES ('2610.00001', 0, 1)"),
       sql(
         "INSERT INTO links (paper_id, kind, external_id, url) VALUES ('2610.00001', 'github', 'a/b', 'https://github.com/a/b')",
       ),
@@ -122,10 +117,7 @@ describe("0001_initial", () => {
     await db.run(sql("DELETE FROM papers WHERE id = '2610.00001'"));
 
     const remaining = await db.first(
-      sql(
-        `SELECT (SELECT count(*) FROM paper_authors) + (SELECT count(*) FROM links)
-          + (SELECT count(*) FROM signals) AS count`,
-      ),
+      sql("SELECT (SELECT count(*) FROM links) + (SELECT count(*) FROM signals) AS count"),
       (row) => z.object({ count: z.number() }).parse(row).count,
     );
 
@@ -144,5 +136,6 @@ describe("0001_initial", () => {
     ).rejects.toThrow(/CHECK/);
     await expect(db.run(sql("UPDATE papers SET categories = '{}'"))).rejects.toThrow(/CHECK/);
     await expect(db.run(sql("UPDATE papers SET added_via = 'crawler'"))).rejects.toThrow(/CHECK/);
+    await expect(db.run(sql("UPDATE papers SET authors = 'Ada'"))).rejects.toThrow(/CHECK|JSON/);
   });
 });

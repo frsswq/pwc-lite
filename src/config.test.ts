@@ -16,3 +16,8 @@ test("treats an empty PWC_DB_PATH as unset", () => {
 test("reads PWC_DB_PATH", () => {
   expect(loadConfig({ PWC_DB_PATH: "/tmp/other.db" }).databasePath).toBe("/tmp/other.db");
 });
+
+test("reads tokens and treats empty values as unset", () => {
+  expect(loadConfig({ PWC_HF_TOKEN: "hf_x" }).hfToken).toBe("hf_x");
+  expect(loadConfig({ PWC_HF_TOKEN: "" }).hfToken).toBeNull();
+});

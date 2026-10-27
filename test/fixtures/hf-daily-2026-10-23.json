@@ -1,0 +1,483 @@
+[
+  {
+    "paper": {
+      "id": "2610.31329",
+      "authors": [
+        {
+          "_id": "6adb093355db1e682e582f86",
+          "name": "Tianming Liang",
+          "hidden": false
+        },
+        {
+          "_id": "6adb093355db1e682e582f87",
+          "name": "Junyi Pan",
+          "hidden": false
+        },
+        {
+          "_id": "6adb093355db1e682e582f88",
+          "name": "Yuxi Li",
+          "hidden": false
+        },
+        {
+          "_id": "6adb093355db1e682e582f89",
+          "name": "Canmiao Fu",
+          "hidden": false
+        }
+      ],
+      "mediaUrls": [
+        "https://cdn-uploads.huggingface.co/production/uploads/66c98c27fafc0fc87c280749/hoztVcjSPXoLjRfeCTYu9.png"
+      ],
+      "publishedAt": "2026-10-22T00:00:00.000Z",
+      "submittedOnDailyAt": "2026-10-23T00:00:00.000Z",
+      "title": "WeVisOne-VL: Unified Visual Perception from Objects to Pixels",
+      "submittedOnDailyBy": {
+        "_id": "66c98c27fafc0fc87c280749",
+        "avatarUrl": "/avatars/c71db3bee0fcd9aabcc38fd871d1cb75.svg",
+        "isPro": false,
+        "fullname": "Tianming Liang",
+        "user": "liangtm",
+        "type": "user",
+        "name": "liangtm"
+      },
+      "summary": "Existing vision-language models (VLMs) remain unreliable for fine-grained visual perception. In this report, we present WeVisOne-VL (WeChat Vision All-in-One), a powerful VLM that unifies object-level and pixel-level perception through structured next-token prediction. It supports multiple visual tasks including object detection, referring localization, counting, OCR, segmentation, and matting, enabling localization at any user-specific granularity, from points and boxes to masks and alpha mattes. Architecturally, we integrate a lightweight pixel decoder into the VLM via a special <OBJ> token to generate instance-level pixel outputs. We train the model with a three-stage curriculum SFT followed by mixed-task RL. Across over 30 benchmarks, WeVisOne-VL demonstrates leading performance on both object-level and pixel-level tasks, while maintaining robust rejection for object-absent queries. By releasing WeVisOne-VL to the open-source community, we hope to advance VLMs from broad visual understanding toward truly reliable perception systems for real-world deployment.",
+      "upvotes": 255,
+      "discussionId": "6adb093455db1e682e582f8e",
+      "projectPage": "https://tencent.github.io/WeVisOne-VL",
+      "githubRepo": "https://github.com/Tencent/WeVisOne-VL",
+      "githubRepoAddedBy": "user",
+      "ai_summary": "WeVisOne-VL unifies object-level and pixel-level visual perception via structured token prediction, supporting detection, localization, counting, OCR, segmentation, and matting with a lightweight pixel decoder and multi-stage training.",
+      "ai_keywords": [
+        "vision-language models",
+        "structured next-token prediction",
+        "object-level perception",
+        "pixel-level perception",
+        "pixel decoder",
+        "<OBJ> token",
+        "curriculum SFT",
+        "mixed-task RL",
+        "object-absent queries"
+      ],
+      "ai_summary_model": "thinkingmachines/Inkling-Small",
+      "githubStars": 291,
+      "organization": {
+        "_id": "66543b6e420092799d2f625c",
+        "name": "tencent",
+        "fullname": "Tencent",
+        "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/5dd96eb166059660ed1ee413/Lp3m-XLpjQGwBItlvn69q.png"
+      }
+    },
+    "publishedAt": "2026-10-21T20:00:00.000Z",
+    "title": "WeVisOne-VL: Unified Visual Perception from Objects to Pixels",
+    "summary": "Existing vision-language models (VLMs) remain unreliable for fine-grained visual perception. In this report, we present WeVisOne-VL (WeChat Vision All-in-One), a powerful VLM that unifies object-level and pixel-level perception through structured next-token prediction. It supports multiple visual tasks including object detection, referring localization, counting, OCR, segmentation, and matting, enabling localization at any user-specific granularity, from points and boxes to masks and alpha mattes. Architecturally, we integrate a lightweight pixel decoder into the VLM via a special <OBJ> token to generate instance-level pixel outputs. We train the model with a three-stage curriculum SFT followed by mixed-task RL. Across over 30 benchmarks, WeVisOne-VL demonstrates leading performance on both object-level and pixel-level tasks, while maintaining robust rejection for object-absent queries. By releasing WeVisOne-VL to the open-source community, we hope to advance VLMs from broad visual understanding toward truly reliable perception systems for real-world deployment.",
+    "mediaUrls": [
+      "https://cdn-uploads.huggingface.co/production/uploads/66c98c27fafc0fc87c280749/hoztVcjSPXoLjRfeCTYu9.png"
+    ],
+    "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.31329.png",
+    "numComments": 4,
+    "submittedBy": {
+      "_id": "66c98c27fafc0fc87c280749",
+      "avatarUrl": "/avatars/c71db3bee0fcd9aabcc38fd871d1cb75.svg",
+      "fullname": "Tianming Liang",
+      "name": "liangtm",
+      "type": "user",
+      "isPro": false,
+      "isHf": false,
+      "isHfAdmin": false,
+      "isMod": false,
+      "followerCount": 2,
+      "isUserFollowing": false
+    },
+    "organization": {
+      "_id": "66543b6e420092799d2f625c",
+      "name": "tencent",
+      "fullname": "Tencent",
+      "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/5dd96eb166059660ed1ee413/Lp3m-XLpjQGwBItlvn69q.png"
+    },
+    "isAuthorParticipating": false
+  },
+  {
+    "paper": {
+      "id": "2610.30926",
+      "authors": [
+        {
+          "_id": "6adabe5955db1e682e582c65",
+          "name": "Songlin Yang",
+          "hidden": false
+        },
+        {
+          "_id": "6adabe5955db1e682e582c66",
+          "name": "Zhe Wang",
+          "hidden": false
+        },
+        {
+          "_id": "6adabe5955db1e682e582c67",
+          "name": "Xiaotong Zhao",
+          "hidden": false
+        },
+        {
+          "_id": "6adabe5955db1e682e582c68",
+          "name": "Xi Wang",
+          "hidden": false
+        }
+      ],
+      "publishedAt": "2026-10-22T08:43:48.000Z",
+      "submittedOnDailyAt": "2026-10-23T00:00:00.000Z",
+      "title": "Making MLLM Latents Matter: Factor-Aware Predictive Learning for Cinematic Video Generation",
+      "submittedOnDailyBy": {
+        "_id": "66f64956ad4fe83c91776459",
+        "avatarUrl": "/avatars/2014de658ac12413754dcf70bc34333e.svg",
+        "isPro": false,
+        "fullname": "Eddie",
+        "user": "EddieYang428",
+        "type": "user",
+        "name": "EddieYang428"
+      },
+      "summary": "Cinematic video generation requires both temporal inference from limited inputs (i.e., sparse rather than frame-by-frame guidance) and factor-aware control of character, scene, action, and camera. Multimodal large language models (MLLMs) offer useful priors for both capabilities, but their representations are not automatically actionable for video generation: a Video Diffusion Transformer (DiT) may bypass them through native conditioning pathways, and using them does not ensure either factor-aware control or generation-compatible temporal prediction. We propose Factor-Aware Predictive Learning (FAPL), which establishes effective MLLM latent use as a shared prerequisite and then targets the two capabilities with complementary learning signals. First, latent-only generator grounding trains the DiT with a frozen MLLM and connector, strengthening the DiT's use of MLLM latents for generation. Second, for factor-aware control, paired videos specify a target-factor change and non-target preservation, and factor-span replacement trains the DiT to realize this relationship in its output. Third, for temporal inference, text-only and text-plus-complete-video observations share a video target, and the trained DiT is then frozen while the MLLM and connector are optimized through it. This final stage trains limited-input representations for generation while retaining complete-observation reconstruction as a complementary training mode. Extensive experiments demonstrate our consistently better performance on three cinematic video generation tasks (i.e., sparse-to-video, factor-aware editing, and multi-shot generation) over baselines and validate FAPL's contributions to MLLM feature use, temporal control, and factor coordination.",
+      "upvotes": 204,
+      "discussionId": "6adabe5955db1e682e582c70",
+      "projectPage": "https://shotverse.github.io/fapl/",
+      "githubRepo": "https://github.com/Songlin1998/ShotVerse2.0",
+      "githubRepoAddedBy": "user",
+      "ai_summary": "Factor-Aware Predictive Learning enables video diffusion transformers to leverage multimodal language model representations for sparse temporal inference and factor-aware cinematic control through staged grounding and optimization.",
+      "ai_keywords": [
+        "Video Diffusion Transformer",
+        "DiT",
+        "multimodal large language models",
+        "MLLM",
+        "latent-only generator grounding",
+        "factor-span replacement",
+        "sparse-to-video",
+        "factor-aware editing",
+        "multi-shot generation"
+      ],
+      "ai_summary_model": "thinkingmachines/Inkling-Small",
+      "githubStars": 5,
+      "organization": {
+        "_id": "66543b6e420092799d2f625c",
+        "name": "tencent",
+        "fullname": "Tencent",
+        "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/5dd96eb166059660ed1ee413/Lp3m-XLpjQGwBItlvn69q.png"
+      }
+    },
+    "publishedAt": "2026-10-22T04:43:48.000Z",
+    "title": "Making MLLM Latents Matter: Factor-Aware Predictive Learning for Cinematic Video Generation",
+    "summary": "Cinematic video generation requires both temporal inference from limited inputs (i.e., sparse rather than frame-by-frame guidance) and factor-aware control of character, scene, action, and camera. Multimodal large language models (MLLMs) offer useful priors for both capabilities, but their representations are not automatically actionable for video generation: a Video Diffusion Transformer (DiT) may bypass them through native conditioning pathways, and using them does not ensure either factor-aware control or generation-compatible temporal prediction. We propose Factor-Aware Predictive Learning (FAPL), which establishes effective MLLM latent use as a shared prerequisite and then targets the two capabilities with complementary learning signals. First, latent-only generator grounding trains the DiT with a frozen MLLM and connector, strengthening the DiT's use of MLLM latents for generation. Second, for factor-aware control, paired videos specify a target-factor change and non-target preservation, and factor-span replacement trains the DiT to realize this relationship in its output. Third, for temporal inference, text-only and text-plus-complete-video observations share a video target, and the trained DiT is then frozen while the MLLM and connector are optimized through it. This final stage trains limited-input representations for generation while retaining complete-observation reconstruction as a complementary training mode. Extensive experiments demonstrate our consistently better performance on three cinematic video generation tasks (i.e., sparse-to-video, factor-aware editing, and multi-shot generation) over baselines and validate FAPL's contributions to MLLM feature use, temporal control, and factor coordination.",
+    "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.30926.png",
+    "numComments": 2,
+    "submittedBy": {
+      "_id": "66f64956ad4fe83c91776459",
+      "avatarUrl": "/avatars/2014de658ac12413754dcf70bc34333e.svg",
+      "fullname": "Eddie",
+      "name": "EddieYang428",
+      "type": "user",
+      "isPro": false,
+      "isHf": false,
+      "isHfAdmin": false,
+      "isMod": false,
+      "followerCount": 2,
+      "isUserFollowing": false
+    },
+    "organization": {
+      "_id": "66543b6e420092799d2f625c",
+      "name": "tencent",
+      "fullname": "Tencent",
+      "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/5dd96eb166059660ed1ee413/Lp3m-XLpjQGwBItlvn69q.png"
+    },
+    "isAuthorParticipating": false
+  },
+  {
+    "paper": {
+      "id": "2610.30181",
+      "authors": [
+        {
+          "_id": "6adad3e055db1e682e582d89",
+          "user": {
+            "_id": "64084fa192033c150738e4f2",
+            "avatarUrl": "/avatars/dfff2216eb235c635e5abe6fda3084f0.svg",
+            "isPro": false,
+            "fullname": "Yu_xm",
+            "user": "Yu2020",
+            "type": "user",
+            "name": "Yu2020"
+          },
+          "name": "Xiaomin Yu",
+          "status": "claimed_verified",
+          "statusLastChangedAt": "2026-10-26T13:32:27.588Z",
+          "hidden": false
+        },
+        {
+          "_id": "6adad3e055db1e682e582d8a",
+          "user": {
+            "_id": "6a12ade86d6f1c414e853e85",
+            "avatarUrl": "https://cdn-avatars.huggingface.co/v1/production/uploads/6a12ade86d6f1c414e853e85/prQhlr6ZbrPVyZX0KiUYG.jpeg",
+            "isPro": false,
+            "fullname": "Hongliang Chen",
+            "user": "hchen272",
+            "type": "user",
+            "name": "hchen272"
+          },
+          "name": "Hongliang Chen",
+          "status": "claimed_verified",
+          "statusLastChangedAt": "2026-10-23T08:45:05.481Z",
+          "hidden": false
+        },
+        {
+          "_id": "6adad3e055db1e682e582d8b",
+          "name": "Zhe Huang",
+          "hidden": false
+        },
+        {
+          "_id": "6adad3e055db1e682e582d8c",
+          "name": "Shilin Yan",
+          "hidden": false
+        }
+      ],
+      "mediaUrls": [
+        "https://cdn-uploads.huggingface.co/production/uploads/64084fa192033c150738e4f2/w2dT9akAQKBxzRtUUsk4s.qt"
+      ],
+      "publishedAt": "2026-10-19T00:00:00.000Z",
+      "submittedOnDailyAt": "2026-10-23T00:00:00.000Z",
+      "title": "Deep Search in Real-World Web Environments",
+      "submittedOnDailyBy": {
+        "_id": "64084fa192033c150738e4f2",
+        "avatarUrl": "/avatars/dfff2216eb235c635e5abe6fda3084f0.svg",
+        "isPro": false,
+        "fullname": "Yu_xm",
+        "user": "Yu2020",
+        "type": "user",
+        "name": "Yu2020"
+      },
+      "summary": "Despite substantial progress in Deep Search agents, their ability to conduct end-to-end research in real-world open Web environments remains insufficiently evaluated. Unlike static retrieval settings, information on the real-world Web is distributed across diverse sources, modalities, and heterogeneous formats, often involving complex interaction mechanisms that require agents to autonomously search for, access, and integrate relevant evidence during execution. To address this gap, we introduce the OpenDS task, designed to evaluate agents' ability to perform multi-step deep search in the live, open Web. This task requires agents to autonomously explore the real Web, discover and connect relevant evidence from multiple independent sources through Web search, browser interaction, and evidence processing, and ultimately determine a unique factual answer. Building on this task formulation, we construct OpenDS-World, a benchmark comprising 200 challenging tasks spanning diverse information modalities, heterogeneous file formats, and interactive access requirements, with independent human verification to ensure evidence validity and answer uniqueness. We evaluate 12 frontier models under a unified tool environment and execution protocol. The best-performing model achieves 39.0% accuracy, while human evaluation across 1,000 independent attempts yields 21.1% accuracy. Further analyses of tool usage, search cost, termination behavior, and failure recovery reveal substantial differences in research strategies across models, as well as persistent challenges in tool coordination and long-horizon search management. OpenDS-World provides a unified evaluation platform for systematically assessing and advancing agents' autonomous deep search capabilities in real-world open Web environments.",
+      "upvotes": 189,
+      "discussionId": "6adad3e155db1e682e582da2",
+      "githubRepo": "https://github.com/Yu-xm/OpenDS",
+      "githubRepoAddedBy": "user",
+      "ai_summary": "OpenDS-World introduces a live-web benchmark to evaluate autonomous multi-step deep search agents, revealing significant gaps between frontier models and human performance.",
+      "ai_keywords": [
+        "Deep Search agents",
+        "OpenDS",
+        "multi-step deep search",
+        "Web search",
+        "browser interaction",
+        "evidence processing",
+        "OpenDS-World",
+        "tool coordination",
+        "long-horizon search management"
+      ],
+      "ai_summary_model": "thinkingmachines/Inkling-Small",
+      "githubStars": 25
+    },
+    "publishedAt": "2026-10-18T20:00:00.000Z",
+    "title": "Deep Search in Real-World Web Environments",
+    "summary": "Despite substantial progress in Deep Search agents, their ability to conduct end-to-end research in real-world open Web environments remains insufficiently evaluated. Unlike static retrieval settings, information on the real-world Web is distributed across diverse sources, modalities, and heterogeneous formats, often involving complex interaction mechanisms that require agents to autonomously search for, access, and integrate relevant evidence during execution. To address this gap, we introduce the OpenDS task, designed to evaluate agents' ability to perform multi-step deep search in the live, open Web. This task requires agents to autonomously explore the real Web, discover and connect relevant evidence from multiple independent sources through Web search, browser interaction, and evidence processing, and ultimately determine a unique factual answer. Building on this task formulation, we construct OpenDS-World, a benchmark comprising 200 challenging tasks spanning diverse information modalities, heterogeneous file formats, and interactive access requirements, with independent human verification to ensure evidence validity and answer uniqueness. We evaluate 12 frontier models under a unified tool environment and execution protocol. The best-performing model achieves 39.0% accuracy, while human evaluation across 1,000 independent attempts yields 21.1% accuracy. Further analyses of tool usage, search cost, termination behavior, and failure recovery reveal substantial differences in research strategies across models, as well as persistent challenges in tool coordination and long-horizon search management. OpenDS-World provides a unified evaluation platform for systematically assessing and advancing agents' autonomous deep search capabilities in real-world open Web environments.",
+    "mediaUrls": [
+      "https://cdn-uploads.huggingface.co/production/uploads/64084fa192033c150738e4f2/w2dT9akAQKBxzRtUUsk4s.qt"
+    ],
+    "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.30181.png",
+    "numComments": 2,
+    "submittedBy": {
+      "_id": "64084fa192033c150738e4f2",
+      "avatarUrl": "/avatars/dfff2216eb235c635e5abe6fda3084f0.svg",
+      "fullname": "Yu_xm",
+      "name": "Yu2020",
+      "type": "user",
+      "isPro": false,
+      "isHf": false,
+      "isHfAdmin": false,
+      "isMod": false,
+      "followerCount": 8,
+      "isUserFollowing": false
+    },
+    "isAuthorParticipating": true
+  },
+  {
+    "paper": {
+      "id": "2610.24738",
+      "authors": [
+        {
+          "_id": "6ada184cd10c239d0da2ce8e",
+          "user": {
+            "_id": "65edc5b64f2eb015855afc0c",
+            "avatarUrl": "/avatars/12c03399feb8d5f3a10fb8e01eda1987.svg",
+            "isPro": false,
+            "fullname": "xue wen",
+            "user": "Davidscut",
+            "type": "user",
+            "name": "Davidscut"
+          },
+          "name": "Wen Xue",
+          "status": "claimed_verified",
+          "statusLastChangedAt": "2026-10-23T08:45:05.389Z",
+          "hidden": false
+        },
+        {
+          "_id": "6ada184cd10c239d0da2ce8f",
+          "name": "Yong Liu",
+          "hidden": false
+        },
+        {
+          "_id": "6ada184cd10c239d0da2ce90",
+          "name": "Xueheng Li",
+          "hidden": false
+        },
+        {
+          "_id": "6ada184cd10c239d0da2ce91",
+          "name": "Si Wu",
+          "hidden": false
+        }
+      ],
+      "mediaUrls": [
+        "https://cdn-uploads.huggingface.co/production/uploads/65edc5b64f2eb015855afc0c/blrTBXh3qS9tXFzMropzF.png",
+        "https://cdn-uploads.huggingface.co/production/uploads/65edc5b64f2eb015855afc0c/07PWHTSn3tgGLzbZNwGJ4.png",
+        "https://cdn-uploads.huggingface.co/production/uploads/65edc5b64f2eb015855afc0c/wu4jdSfx957OHPJFBVKGk.png"
+      ],
+      "publishedAt": "2026-10-17T00:00:00.000Z",
+      "submittedOnDailyAt": "2026-10-23T00:00:00.000Z",
+      "title": "Editing Images into Reusable Layers via Compositional Edit-Prior Distillation",
+      "submittedOnDailyBy": {
+        "_id": "65edc5b64f2eb015855afc0c",
+        "avatarUrl": "/avatars/12c03399feb8d5f3a10fb8e01eda1987.svg",
+        "isPro": false,
+        "fullname": "xue wen",
+        "user": "Davidscut",
+        "type": "user",
+        "name": "Davidscut"
+      },
+      "summary": "High-quality image editing requires precise modification of target regions while preserving the content of unrelated regions. Existing editing models produce flattened outputs that limit precise local manipulation and layer reuse, while decomposition methods typically optimize layer recovery separately from instruction-driven editing. To this end, we introduce LayerEditor, a unified framework that couples instruction-guided image editing with controllable generation of reusable RGBA layers. At its core, In-Context RGB-Alpha Token Modeling jointly represents the edited canvas and an ordered sequence of RGB-Alpha layers within a single token sequence, enabling semantic edits and explicit control over individual layer content. To retain the pretrained model's editing capability during adaptation to layered outputs, we propose Compositional Edit-Prior Distillation, which transfers its editing prior to both the edited canvas and the image composed from the predicted layers. To support training and evaluation, we construct LayerEditor-100K, a large-scale paired image-editing dataset with ordered RGBA layer annotations, and introduce dedicated benchmarks for layered editing. Extensive experiments demonstrate that LayerEditor maintains strong editing fidelity while generating accurate RGBA layers, supporting both flexible layer-level manipulation and multi-layer decomposition.",
+      "upvotes": 196,
+      "discussionId": "6ada184cd10c239d0da2ce96",
+      "ai_summary": "LayerEditor unifies instruction-guided image editing with reusable RGBA layer generation via joint token modeling and edit-prior distillation, enabling precise local manipulation and layer reuse.",
+      "ai_keywords": [
+        "In-Context RGB-Alpha Token Modeling",
+        "Compositional Edit-Prior Distillation",
+        "RGBA layers",
+        "instruction-guided image editing",
+        "layer decomposition"
+      ],
+      "ai_summary_model": "thinkingmachines/Inkling-Small",
+      "organization": {
+        "_id": "682a97a154b087448a5504ee",
+        "name": "jingdong1",
+        "fullname": "jingdong",
+        "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/682a966182dc4fc3e373e3ed/9xUgXZCij6qGJpLqpR99M.png"
+      }
+    },
+    "publishedAt": "2026-10-16T20:00:00.000Z",
+    "title": "Editing Images into Reusable Layers via Compositional Edit-Prior Distillation",
+    "summary": "High-quality image editing requires precise modification of target regions while preserving the content of unrelated regions. Existing editing models produce flattened outputs that limit precise local manipulation and layer reuse, while decomposition methods typically optimize layer recovery separately from instruction-driven editing. To this end, we introduce LayerEditor, a unified framework that couples instruction-guided image editing with controllable generation of reusable RGBA layers. At its core, In-Context RGB-Alpha Token Modeling jointly represents the edited canvas and an ordered sequence of RGB-Alpha layers within a single token sequence, enabling semantic edits and explicit control over individual layer content. To retain the pretrained model's editing capability during adaptation to layered outputs, we propose Compositional Edit-Prior Distillation, which transfers its editing prior to both the edited canvas and the image composed from the predicted layers. To support training and evaluation, we construct LayerEditor-100K, a large-scale paired image-editing dataset with ordered RGBA layer annotations, and introduce dedicated benchmarks for layered editing. Extensive experiments demonstrate that LayerEditor maintains strong editing fidelity while generating accurate RGBA layers, supporting both flexible layer-level manipulation and multi-layer decomposition.",
+    "mediaUrls": [
+      "https://cdn-uploads.huggingface.co/production/uploads/65edc5b64f2eb015855afc0c/blrTBXh3qS9tXFzMropzF.png",
+      "https://cdn-uploads.huggingface.co/production/uploads/65edc5b64f2eb015855afc0c/07PWHTSn3tgGLzbZNwGJ4.png",
+      "https://cdn-uploads.huggingface.co/production/uploads/65edc5b64f2eb015855afc0c/wu4jdSfx957OHPJFBVKGk.png"
+    ],
+    "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.24738.png",
+    "numComments": 2,
+    "submittedBy": {
+      "_id": "65edc5b64f2eb015855afc0c",
+      "avatarUrl": "/avatars/12c03399feb8d5f3a10fb8e01eda1987.svg",
+      "fullname": "xue wen",
+      "name": "Davidscut",
+      "type": "user",
+      "isPro": false,
+      "isHf": false,
+      "isHfAdmin": false,
+      "isMod": false,
+      "isUserFollowing": false
+    },
+    "organization": {
+      "_id": "682a97a154b087448a5504ee",
+      "name": "jingdong1",
+      "fullname": "jingdong",
+      "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/682a966182dc4fc3e373e3ed/9xUgXZCij6qGJpLqpR99M.png"
+    },
+    "isAuthorParticipating": true
+  },
+  {
+    "paper": {
+      "id": "2610.30949",
+      "authors": [
+        {
+          "_id": "6adb14ae55db1e682e582ffa",
+          "name": "A. Jian Yang",
+          "hidden": false
+        },
+        {
+          "_id": "6adb14ae55db1e682e582ffb",
+          "name": "An Huang",
+          "hidden": false
+        },
+        {
+          "_id": "6adb14ae55db1e682e582ffc",
+          "name": "Bo Dan",
+          "hidden": false
+        },
+        {
+          "_id": "6adb14ae55db1e682e582ffd",
+          "name": "Chen Mu",
+          "hidden": false
+        }
+      ],
+      "publishedAt": "2026-10-22T00:00:00.000Z",
+      "submittedOnDailyAt": "2026-10-23T00:00:00.000Z",
+      "title": "IQuest-Q1: Advancing Foundation Capabilities for Agentic CLI Systems",
+      "submittedOnDailyBy": {
+        "_id": "66d6cd1a15494eba6ee80105",
+        "avatarUrl": "/avatars/5a906137c466ba0346094d5be4dc4a4a.svg",
+        "isPro": false,
+        "fullname": "Zheng Chen",
+        "user": "ZhengChen1999",
+        "type": "user",
+        "name": "ZhengChen1999"
+      },
+      "summary": "We present IQuest-Q1, a sparse Mixture-of-Experts (MoE) agentic foundation model with 320B total parameters (15B activated). IQuest-Q1 is developed through a three-stage process: (1) stable and efficient pre-training, combining Stable SplitNorm, Muon, and muP with a two-stage curriculum whose second stage increases the coding-data mixture, preserving a wide stability margin between safe and optimal learning rates; (2) fine-grained mid-training, expanding the data mixture across domains and formats and progressively extending the context; and (3) multi-scaffold with multi-version post-training, combining SFT, domain-specialized RL, and MOPD across various scaffolds to integrate complementary training signals and strengthen agentic coding capabilities. Furthermore, model merging combines different experts and checkpoints from different stages while mitigating conflicts among their parameter updates. The resulting IQuest-Q1 demonstrates capabilities in both coding and general tasks. We release IQuest-Q1 as an open-source model to support community research and development.",
+      "upvotes": 105,
+      "discussionId": "6adb14ae55db1e682e5830ab",
+      "ai_summary": "IQuest-Q1 is a sparse Mixture-of-Experts foundation model trained via multi-stage pre-training, mid-training, and post-training to achieve strong agentic coding and general capabilities.",
+      "ai_keywords": [
+        "sparse Mixture-of-Experts",
+        "MoE",
+        "Stable SplitNorm",
+        "Muon",
+        "muP",
+        "two-stage curriculum",
+        "fine-grained mid-training",
+        "multi-scaffold post-training",
+        "SFT",
+        "domain-specialized RL",
+        "MOPD",
+        "model merging"
+      ],
+      "ai_summary_model": "thinkingmachines/Inkling-Small",
+      "organization": {
+        "_id": "6937e1578cd2568ba4c9d3f9",
+        "name": "IQuestLab",
+        "fullname": "IQuest",
+        "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/68c80cc3a1ca9a73c17d29f7/pjOEigZuk_UQ4dqyS482V.png"
+      }
+    },
+    "publishedAt": "2026-10-21T20:00:00.000Z",
+    "title": "IQuest-Q1: Advancing Foundation Capabilities for Agentic CLI Systems",
+    "summary": "We present IQuest-Q1, a sparse Mixture-of-Experts (MoE) agentic foundation model with 320B total parameters (15B activated). IQuest-Q1 is developed through a three-stage process: (1) stable and efficient pre-training, combining Stable SplitNorm, Muon, and muP with a two-stage curriculum whose second stage increases the coding-data mixture, preserving a wide stability margin between safe and optimal learning rates; (2) fine-grained mid-training, expanding the data mixture across domains and formats and progressively extending the context; and (3) multi-scaffold with multi-version post-training, combining SFT, domain-specialized RL, and MOPD across various scaffolds to integrate complementary training signals and strengthen agentic coding capabilities. Furthermore, model merging combines different experts and checkpoints from different stages while mitigating conflicts among their parameter updates. The resulting IQuest-Q1 demonstrates capabilities in both coding and general tasks. We release IQuest-Q1 as an open-source model to support community research and development.",
+    "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.30949.png",
+    "numComments": 2,
+    "submittedBy": {
+      "_id": "66d6cd1a15494eba6ee80105",
+      "avatarUrl": "/avatars/5a906137c466ba0346094d5be4dc4a4a.svg",
+      "fullname": "Zheng Chen",
+      "name": "ZhengChen1999",
+      "type": "user",
+      "isPro": false,
+      "isHf": false,
+      "isHfAdmin": false,
+      "isMod": false,
+      "isUserFollowing": false
+    },
+    "organization": {
+      "_id": "6937e1578cd2568ba4c9d3f9",
+      "name": "IQuestLab",
+      "fullname": "IQuest",
+      "avatar": "https://cdn-avatars.huggingface.co/v1/production/uploads/68c80cc3a1ca9a73c17d29f7/pjOEigZuk_UQ4dqyS482V.png"
+    },
+    "isAuthorParticipating": false
+  }
+]
