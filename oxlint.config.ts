@@ -43,5 +43,23 @@ export default defineConfig({
     "anti-slop/no-widen-then-assert": "error",
     "anti-slop/require-readable-spacing": "error",
     "anti-slop/require-safety-comment-for-type-assertion": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        paths: [
+          {
+            name: "bun:sqlite",
+            message:
+              "Use the Database contract from src/db/database.ts. Only src/db/sqlite.ts may import bun:sqlite.",
+          },
+        ],
+      },
+    ],
   },
+  overrides: [
+    {
+      files: ["src/db/sqlite.ts"],
+      rules: { "no-restricted-imports": "off" },
+    },
+  ],
 });
