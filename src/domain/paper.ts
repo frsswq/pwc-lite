@@ -8,6 +8,14 @@ export const linkKinds = ["github", "hf_model", "hf_dataset", "hf_space", "proje
 
 export type LinkKind = (typeof linkKinds)[number];
 
+export const hubLinkKinds = [
+  "hf_model",
+  "hf_dataset",
+  "hf_space",
+] as const satisfies readonly LinkKind[];
+
+export type HubLinkKind = (typeof hubLinkKinds)[number];
+
 export const signalSources = ["hf_daily_upvotes"] as const;
 
 export type SignalSource = (typeof signalSources)[number];

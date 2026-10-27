@@ -1,5 +1,12 @@
 import { type Statement, sql } from "../db/database";
-import type { AddedVia, Link, PaperRecord, Signal } from "../domain/paper";
+import type { ArxivId } from "../domain/arxiv-id";
+import {
+  type AddedVia,
+  type Link,
+  type PaperRecord,
+  type Signal,
+  hubLinkKinds,
+} from "../domain/paper";
 
 const paperColumns = [
   "version",
@@ -95,3 +102,45 @@ export const advanceCursor = (source: string, cursor: string, now: string): Stat
      WHERE excluded.cursor > ingest_cursors.cursor`,
     [source, cursor, now],
   );
+
+/**
+ * Replaces the Hugging Face Hub links of a paper with the links from a fetch, and records the fetch time.
+ *
+ * Links of other kinds do not change.
+ */
+export const syncHubLinks = (
+  paperId: ArxivId,
+  links: readonly Link[],
+  now: string,
+): Statement[] => [
+  sql(
+    `DELETE FROM links WHERE paper_id = ? AND kind IN (SELECT value FROM json_each(?))
+     AND kind || ' ' || external_id NOT IN (SELECT value FROM json_each(?))`,
+    [
+      paperId,
+      JSON.stringify(hubLinkKinds),
+      JSON.stringify(links.map((link) => `${link.kind} ${link.externalId}`)),
+    ],
+  ),
+  ...links.map((link) =>
+    sql(
+      `INSERT INTO links (paper_id, kind, external_id, url, popularity, last_activity_at, fetched_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT (paper_id, kind, external_id) DO UPDATE SET
+         url = excluded.url,
+         popularity = excluded.popularity,
+         last_activity_at = excluded.last_activity_at,
+         fetched_at = excluded.fetched_at`,
+      [
+        link.paperId,
+        link.kind,
+        link.externalId,
+        link.url,
+        link.popularity,
+        link.lastActivityAt,
+        now,
+      ],
+    ),
+  ),
+  sql("UPDATE papers SET hub_fetched_at = ? WHERE id = ?", [now, paperId]),
+];

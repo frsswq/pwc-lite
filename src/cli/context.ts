@@ -9,6 +9,7 @@ export type CliContext = {
   readonly openDatabase: () => Promise<Database>;
   readonly http: HttpClient;
   readonly arxivLimiter: RateLimiter;
+  readonly hubLimiter: RateLimiter;
   readonly now: () => Date;
   readonly stdout: (text: string) => void;
   readonly stderr: (text: string) => void;

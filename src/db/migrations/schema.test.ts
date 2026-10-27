@@ -35,7 +35,7 @@ const search = async (db: Database, query: string) =>
     decodeId,
   );
 
-describe("0001_initial", () => {
+describe("schema", () => {
   let db: Database;
 
   beforeEach(async () => {
@@ -55,6 +55,7 @@ describe("0001_initial", () => {
 
     expect(objects).toEqual([
       "index:links_kind_external_id",
+      "index:papers_hub_fetched_at",
       "index:papers_ingested_at",
       "index:papers_published_at",
       "index:signals_observed_on",

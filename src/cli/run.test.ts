@@ -9,8 +9,18 @@ import { type FakeHttp, fakeHttp, jsonResponse, readFixture } from "../testing/f
 const daily = await readFixture("hf-daily-2026-10-23.json");
 const arxiv = await readFixture("arxiv-batch.xml");
 
+const repos = await readFixture("hf-repos-2610.31329.json");
+
 const sources = (): FakeHttp =>
   fakeHttp((url) => {
+    if (url === "https://huggingface.co/api/arxiv/2610.31329/repos") {
+      return jsonResponse(repos);
+    }
+
+    if (url.includes("/repos")) {
+      return jsonResponse("{}");
+    }
+
     if (url.startsWith("https://huggingface.co/api/daily_papers?date=")) {
       return jsonResponse(url.endsWith("2026-10-23") ? daily : "[]");
     }
@@ -61,6 +71,18 @@ describe("pwc", () => {
     );
     expect(show.stdout).toContain("github        https://github.com/Tencent/WeVisOne-VL  291");
     expect(show.stdout).toContain("Upvotes: 255 (Daily Papers 2026-10-23)");
+  });
+
+  test("ingests Hub links and shows them", async () => {
+    await run("ingest", "daily", "--since", "2026-10-23", "--skip-arxiv");
+
+    const hub = await run("ingest", "hub", "--skip-discover");
+
+    expect(hub.code).toBe(0);
+    expect(hub.stderr).toBe("Hugging Face Hub: 0 papers discovered, 5 papers refreshed, 6 links.");
+    expect((await run("show", "2610.31329")).stdout).toContain(
+      "hf_model      https://huggingface.co/tencent/WeVisOne-VL-4B  67",
+    );
   });
 
   test("prints JSON for read commands", async () => {

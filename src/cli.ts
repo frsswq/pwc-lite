@@ -7,6 +7,7 @@ import { openSqliteDatabase } from "./db/sqlite";
 import { arxivIntervalMs } from "./sources/arxiv";
 import { defaultHttpClient } from "./sources/http";
 import { createRateLimiter } from "./sources/rate-limit";
+import { hubIntervalMs } from "./ingest/hf-hub";
 
 const config = loadConfig(Bun.env);
 
@@ -21,6 +22,7 @@ const exitCode = await runCli(Bun.argv.slice(2), {
   },
   http: defaultHttpClient,
   arxivLimiter: createRateLimiter(arxivIntervalMs, defaultHttpClient.sleep),
+  hubLimiter: createRateLimiter(hubIntervalMs, defaultHttpClient.sleep),
   now: () => new Date(),
   stdout: (text) => {
     process.stdout.write(`${text}\n`);

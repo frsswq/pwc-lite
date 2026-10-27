@@ -25,6 +25,7 @@ export const runTestCli = async (
     openDatabase: async () => ({ ...db, close: async () => undefined }),
     http: http.client,
     arxivLimiter: createRateLimiter(3000, http.client.sleep, () => 0),
+    hubLimiter: createRateLimiter(250, http.client.sleep, () => 0),
     now: () => new Date(now),
     stdout: (text) => void stdout.push(text),
     stderr: (text) => void stderr.push(text),
