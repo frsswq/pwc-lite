@@ -1,11 +1,33 @@
 #!/usr/bin/env bun
+import { runCli } from "./cli/run";
+import { loadConfig } from "./config";
+import { migrate } from "./db/migrate";
+import { migrations } from "./db/migrations/index";
+import { openSqliteDatabase } from "./db/sqlite";
+import { arxivIntervalMs } from "./sources/arxiv";
+import { defaultHttpClient } from "./sources/http";
+import { createRateLimiter } from "./sources/rate-limit";
 
-const usage = `pwc - lightweight headless paper discovery
+const config = loadConfig(Bun.env);
 
-Usage:
-  pwc <command> [options]
+const exitCode = await runCli(Bun.argv.slice(2), {
+  config,
+  openDatabase: async () => {
+    const db = openSqliteDatabase(config.databasePath);
 
-Commands are not implemented yet.
-See https://github.com/frsswq/pwc-lite/issues.`;
+    await migrate(db, migrations);
 
-console.log(usage);
+    return db;
+  },
+  http: defaultHttpClient,
+  arxivLimiter: createRateLimiter(arxivIntervalMs, defaultHttpClient.sleep),
+  now: () => new Date(),
+  stdout: (text) => {
+    process.stdout.write(`${text}\n`);
+  },
+  stderr: (text) => {
+    process.stderr.write(`${text}\n`);
+  },
+});
+
+process.exitCode = exitCode;

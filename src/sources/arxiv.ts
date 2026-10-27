@@ -84,13 +84,18 @@ const chunks = <Item>(items: readonly Item[], size: number): Item[][] => {
   return result;
 };
 
-/** Fetches metadata for arXiv IDs in batches, and waits for the rate limiter before each request. */
+/**
+ * Fetches metadata for arXiv IDs in batches, and waits for the rate limiter before each request.
+ *
+ * The result holds only requested papers, even when the feed holds more entries.
+ */
 export const fetchArxivPapers = async (
   client: HttpClient,
   limiter: RateLimiter,
   ids: readonly ArxivId[],
 ): Promise<ArxivBatch> => {
   const unique = [...new Set(ids)];
+  const requested = new Set<string>(unique);
   const papers: PaperRecord[] = [];
 
   for (const batch of chunks(unique, arxivBatchSize)) {
@@ -103,10 +108,13 @@ export const fetchArxivPapers = async (
 
     const response = await request(client, { source, url: `${endpoint}?${params}`, headers: {} });
 
-    papers.push(...parseArxivFeed(await response.text()));
+    for (const paper of parseArxivFeed(await response.text())) {
+      if (requested.has(paper.id)) {
+        requested.delete(paper.id);
+        papers.push(paper);
+      }
+    }
   }
 
-  const returned = new Set<string>(papers.map(({ id }) => id));
-
-  return { papers, missingIds: unique.filter((id) => !returned.has(id)) };
+  return { papers, missingIds: unique.filter((id) => requested.has(id)) };
 };

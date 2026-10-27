@@ -120,6 +120,19 @@ describe("fetchArxivPapers", () => {
     );
   });
 
+  test("ignores entries that were not requested, and keeps one entry for each ID", async () => {
+    const http = fakeHttp(() => new Response(fixture));
+    const { limiter } = recordingLimiter();
+
+    const result = await fetchArxivPapers(http.client, limiter, [
+      arxivId("cs/0112017"),
+      arxivId("cs/0112017"),
+    ]);
+
+    expect(result.papers.map(({ id }) => `${id}`)).toEqual(["cs/0112017"]);
+    expect(result.missingIds).toEqual([]);
+  });
+
   test("splits IDs into batches and waits between requests", async () => {
     const http = fakeHttp(() => new Response(feed("")));
     const { limiter, sleeps } = recordingLimiter();
