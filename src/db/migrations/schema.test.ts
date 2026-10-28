@@ -54,18 +54,23 @@ describe("schema", () => {
     );
 
     expect(objects).toEqual([
+      "index:concept_fetches_fetched_at",
       "index:embeddings_model",
       "index:links_kind_external_id",
+      "index:paper_concepts_concept_id",
       "index:paper_tags_tag_id",
       "index:papers_hub_fetched_at",
       "index:papers_ingested_at",
       "index:papers_published_at",
       "index:signals_observed_on",
       "index:vectors_model",
+      "table:concept_fetches",
+      "table:concepts",
       "table:embeddings",
       "table:ingest_cursors",
       "table:library",
       "table:links",
+      "table:paper_concepts",
       "table:paper_tags",
       "table:papers",
       "table:papers_fts",

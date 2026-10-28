@@ -1,0 +1,346 @@
+{
+  "id": "124066",
+  "arxiv_id": "2610.31329",
+  "source": "arxiv",
+  "source_url": null,
+  "url_abs": "https://arxiv.org/abs/2610.31329",
+  "url_pdf": "https://arxiv.org/pdf/2610.31329.pdf",
+  "thumbnail_url": "/api/thumbnails/2610_31329_v1.jpg?fit=fit9&v=1792744093561922104",
+  "title": "WeVisOne-VL: Unified Visual Perception from Objects to Pixels",
+  "abstract": "Existing vision-language models (VLMs) remain unreliable for fine-grained visual perception. In this report, we present WeVisOne-VL (WeChat Vision All-in-One), a powerful VLM that unifies object-level and pixel-level perception through structured next-token prediction. It supports multiple visual tasks including object detection, referring localization, counting, OCR, segmentation, and matting, enabling localization at any user-specific granularity, from points and boxes to masks and alpha mattes. Architecturally, we integrate a lightweight pixel decoder into the VLM via a special <OBJ> token to generate instance-level pixel outputs. We train the model with a three-stage curriculum SFT followed by mixed-task RL. Across over 30 benchmarks, WeVisOne-VL demonstrates leading performance on both object-level and pixel-level tasks, while maintaining robust rejection for object-absent queries. By releasing WeVisOne-VL to the open-source community, we hope to advance VLMs from broad visual understanding toward truly reliable perception systems for real-world deployment.",
+  "authors": [
+    "Tianming Liang",
+    "Junyi Pan",
+    "Yuxi Li",
+    "Canmiao Fu",
+    "Zhipeng Huang",
+    "Chong Sun",
+    "Chen Li",
+    "Jing Lyu"
+  ],
+  "author_links": [
+    {
+      "id": "242551",
+      "name": "Tianming Liang",
+      "hf_username": null,
+      "hf_avatar_url": null
+    },
+    {
+      "id": "115274",
+      "name": "Junyi Pan",
+      "hf_username": null,
+      "hf_avatar_url": null
+    },
+    {
+      "id": "14859",
+      "name": "Yuxi Li",
+      "hf_username": null,
+      "hf_avatar_url": null
+    },
+    {
+      "id": "12109",
+      "name": "Canmiao Fu",
+      "hf_username": null,
+      "hf_avatar_url": null
+    },
+    {
+      "id": "242552",
+      "name": "Zhipeng Huang",
+      "hf_username": null,
+      "hf_avatar_url": null
+    },
+    {
+      "id": "242047",
+      "name": "Chong Sun",
+      "hf_username": null,
+      "hf_avatar_url": null
+    },
+    {
+      "id": "239956",
+      "name": "Chen Li",
+      "hf_username": null,
+      "hf_avatar_url": null
+    },
+    {
+      "id": "117575",
+      "name": "Jing Lyu",
+      "hf_username": null,
+      "hf_avatar_url": null
+    }
+  ],
+  "published": "2026-10-22",
+  "conference": null,
+  "conference_url_abs": null,
+  "conference_url_pdf": null,
+  "proceeding": null,
+  "conference_slug": null,
+  "conference_name": null,
+  "conference_award": null,
+  "version": "v1",
+  "is_latest_version": true,
+  "citation_count": 0,
+  "semantic_scholar_id": null,
+  "citation_updated_at": "2026-10-23T08:44:58.144473Z",
+  "primary_category": null,
+  "all_categories": [],
+  "urls_extracted": true,
+  "tldr": "WeVisOne-VL unifies object and pixel perception through structured next-token prediction. A lightweight pixel decoder attached to a special <OBJ> token supports points, boxes, masks, alpha mattes, OCR, counting, and rejection of absent objects across 30+ benchmarks.",
+  "num_pages": null,
+  "suggested_questions": [
+    "How does the <OBJ> token connect the VLM to pixel decoding?",
+    "How does WeVisOne-VL compare across object- and pixel-level tasks?",
+    "What limitations affect WeVisOne-VL’s reliability in real-world deployment?"
+  ],
+  "evaluated_benchmarks": [
+    "COCO (val2017)",
+    "LVIS (Object Detection)",
+    "ReasonSeg",
+    "VisDrone",
+    "RefCOCOg test",
+    "Dense200"
+  ],
+  "page_title": "WeVisOne-VL benchmarks: COCO, LVIS, ReasonSeg, VisDrone, RefCOCOg test | Papers with Code",
+  "hf_models": [
+    "https://huggingface.co/tencent/WeVisOne-VL-4B",
+    "https://huggingface.co/tencent/WeVisOne-VL-2B"
+  ],
+  "hf_datasets": [],
+  "hf_spaces": [
+    "https://huggingface.co/spaces/hugging-apps/wevisone-vl-4b",
+    "https://huggingface.co/spaces/hugging-apps/wevisone-vl-2b"
+  ],
+  "hf_artifact_summary": {
+    "model_count": 2,
+    "dataset_count": 0,
+    "space_count": 4,
+    "best_kind": "space",
+    "best_count": 4,
+    "best_url": "https://huggingface.co/papers/2610.31329"
+  },
+  "linked_hf_artifacts": null,
+  "has_official_implementation": true,
+  "code_repository_count": 1,
+  "repositories": null,
+  "project_pages": null,
+  "x_threads": null,
+  "abstract_mentions": [
+    {
+      "start": 9,
+      "end": 38,
+      "surface": "vision-language models (VLMs)",
+      "entity_type": "method",
+      "slug": "vision-language-model-vlm",
+      "name": "Vision-language model (VLM)",
+      "preview": {
+        "name": "Vision-language model (VLM)",
+        "description": "A vision-language model (VLM) is a multimodal model that takes images (and often video) together with text as input and produces text, so it can describe, answer questions about, ground, and reason over visual content. Early VLMs learned joint image-text representations with contrastive pre-training such as [CLIP](/methods/clip); most current VLMs connect a vision encoder such as a [Vision Transfo",
+        "image_url": "/api/v1/methods/vision-language-model-vlm/image?v=1792761684",
+        "count": 6384,
+        "detail": null
+      }
+    },
+    {
+      "start": 171,
+      "end": 174,
+      "surface": "VLM",
+      "entity_type": "method",
+      "slug": "vision-language-model-vlm",
+      "name": "Vision-language model (VLM)",
+      "preview": {
+        "name": "Vision-language model (VLM)",
+        "description": "A vision-language model (VLM) is a multimodal model that takes images (and often video) together with text as input and produces text, so it can describe, answer questions about, ground, and reason over visual content. Early VLMs learned joint image-text representations with contrastive pre-training such as [CLIP](/methods/clip); most current VLMs connect a vision encoder such as a [Vision Transfo",
+        "image_url": "/api/v1/methods/vision-language-model-vlm/image?v=1792761684",
+        "count": 6384,
+        "detail": null
+      }
+    },
+    {
+      "start": 570,
+      "end": 573,
+      "surface": "VLM",
+      "entity_type": "method",
+      "slug": "vision-language-model-vlm",
+      "name": "Vision-language model (VLM)",
+      "preview": {
+        "name": "Vision-language model (VLM)",
+        "description": "A vision-language model (VLM) is a multimodal model that takes images (and often video) together with text as input and produces text, so it can describe, answer questions about, ground, and reason over visual content. Early VLMs learned joint image-text representations with contrastive pre-training such as [CLIP](/methods/clip); most current VLMs connect a vision encoder such as a [Vision Transfo",
+        "image_url": "/api/v1/methods/vision-language-model-vlm/image?v=1792761684",
+        "count": 6384,
+        "detail": null
+      }
+    },
+    {
+      "start": 691,
+      "end": 694,
+      "surface": "SFT",
+      "entity_type": "method",
+      "slug": "supervised-fine-tuning-sft",
+      "name": "Supervised Fine-Tuning (SFT)",
+      "preview": {
+        "name": "Supervised Fine-Tuning (SFT)",
+        "description": "Supervised fine-tuning (SFT) trains a pretrained model on labeled input-output pairs with the standard [cross-entropy](/methods/cross-entropy-ce) (next-token) loss. For language models these pairs are usually prompts with demonstration responses written by humans or by stronger models, which turns a base model into an instruction-following assistant. SFT is the first post-training stage of the RLH",
+        "image_url": "/api/v1/methods/supervised-fine-tuning-sft/image?v=1792761684",
+        "count": 2953,
+        "detail": null
+      }
+    },
+    {
+      "start": 974,
+      "end": 978,
+      "surface": "VLMs",
+      "entity_type": "method",
+      "slug": "vision-language-model-vlm",
+      "name": "Vision-language model (VLM)",
+      "preview": {
+        "name": "Vision-language model (VLM)",
+        "description": "A vision-language model (VLM) is a multimodal model that takes images (and often video) together with text as input and produces text, so it can describe, answer questions about, ground, and reason over visual content. Early VLMs learned joint image-text representations with contrastive pre-training such as [CLIP](/methods/clip); most current VLMs connect a vision encoder such as a [Vision Transfo",
+        "image_url": "/api/v1/methods/vision-language-model-vlm/image?v=1792761684",
+        "count": 6384,
+        "detail": null
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "337",
+      "name": "Image Matting",
+      "slug": "image-matting"
+    },
+    {
+      "id": "3",
+      "name": "Image segmentation",
+      "slug": "image-segmentation"
+    },
+    {
+      "id": "8",
+      "name": "Image Understanding",
+      "slug": "image-understanding"
+    },
+    {
+      "id": "5",
+      "name": "Language Modeling",
+      "slug": "language-modeling"
+    },
+    {
+      "id": "340",
+      "name": "Object Counting",
+      "slug": "object-counting"
+    },
+    {
+      "id": "2",
+      "name": "Object Detection",
+      "slug": "object-detection"
+    },
+    {
+      "id": "4",
+      "name": "OCR",
+      "slug": "ocr"
+    },
+    {
+      "id": "22",
+      "name": "Reinforcement Learning",
+      "slug": "reinforcement-learning"
+    },
+    {
+      "id": "437",
+      "name": "Visual Grounding",
+      "slug": "visual-grounding"
+    }
+  ],
+  "methods": [
+    {
+      "id": "82",
+      "name": "Online Reinforcement Learning (Online RL)",
+      "slug": "online-rl",
+      "introduced_year": null,
+      "source_paper_id": null,
+      "source_url": null,
+      "source_title": null,
+      "code_snippet_url": null
+    },
+    {
+      "id": "1391",
+      "name": "Supervised Fine-Tuning (SFT)",
+      "slug": "supervised-fine-tuning-sft",
+      "introduced_year": null,
+      "source_paper_id": null,
+      "source_url": "https://huggingface.co/docs/trl/sft_trainer",
+      "source_title": "SFT Trainer (Hugging Face TRL documentation)",
+      "code_snippet_url": null
+    },
+    {
+      "id": "1343",
+      "name": "Vision-language model (VLM)",
+      "slug": "vision-language-model-vlm",
+      "introduced_year": null,
+      "source_paper_id": null,
+      "source_url": "https://arxiv.org/abs/2405.17247",
+      "source_title": "An Introduction to Vision-Language Modeling",
+      "code_snippet_url": null
+    }
+  ],
+  "introduced_benchmarks": null,
+  "introduced_frameworks": null,
+  "predecessor_papers": null,
+  "successor_papers": null,
+  "organizations": [
+    {
+      "id": "20",
+      "name": "Tencent",
+      "slug": "tencent",
+      "logo_url": "/api/v1/organizations/tencent/logo/496ceb5200e49bc342db1dbd537d7f607c8e9b23ed2ecf45c9a8104d7fb2ae5b.webp",
+      "source": "hf_org_papers",
+      "added_by_hf_username": null
+    }
+  ],
+  "leaderboard_ranks": [
+    {
+      "evaluation_id": "44446",
+      "dataset_name": "ReasonSeg",
+      "dataset_slug": "reasonseg",
+      "best_rank": 1,
+      "best_metric": "gIoU",
+      "task_slug": "image-segmentation"
+    },
+    {
+      "evaluation_id": "44444",
+      "dataset_name": "VisDrone",
+      "dataset_slug": "visdrone",
+      "best_rank": 1,
+      "best_metric": "F1 (mIoU)",
+      "task_slug": "object-detection"
+    },
+    {
+      "evaluation_id": "44441",
+      "dataset_name": "COCO (val2017)",
+      "dataset_slug": "coco-val2017",
+      "best_rank": 2,
+      "best_metric": "F1 (mIoU)",
+      "task_slug": "object-detection"
+    },
+    {
+      "evaluation_id": "44443",
+      "dataset_name": "Dense200",
+      "dataset_slug": "dense200",
+      "best_rank": 2,
+      "best_metric": "F1 (mIoU)",
+      "task_slug": "object-detection"
+    },
+    {
+      "evaluation_id": "44442",
+      "dataset_name": "LVIS (Object Detection)",
+      "dataset_slug": "lvis-object-detection",
+      "best_rank": 2,
+      "best_metric": "F1 (mIoU)",
+      "task_slug": "object-detection"
+    },
+    {
+      "evaluation_id": "44445",
+      "dataset_name": "RefCOCOg test",
+      "dataset_slug": "refcocog-test",
+      "best_rank": 2,
+      "best_metric": "F1 (mIoU)",
+      "task_slug": "visual-grounding"
+    }
+  ]
+}

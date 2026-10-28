@@ -61,3 +61,23 @@ export type Paper = PaperRecord & {
   readonly ingestedAt: string;
   readonly arxivFetchedAt: string | null;
 };
+
+export const conceptKinds = ["task", "method"] as const;
+
+export type ConceptKind = (typeof conceptKinds)[number];
+
+/** A research task or method from Papers with Code. */
+export type Concept = {
+  readonly kind: ConceptKind;
+  /** Lower-case identifier such as `object-detection`. */
+  readonly slug: string;
+  readonly name: string;
+};
+
+/** Converts a task or method name, or a slug, into slug form. */
+export const toConceptSlug = (text: string): string =>
+  text
+    .trim()
+    .toLowerCase()
+    .replaceAll(/[^\p{L}\p{N}]+/gu, "-")
+    .replaceAll(/^-|-$/g, "");

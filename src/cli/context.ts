@@ -24,6 +24,7 @@ export type CliContext = {
   readonly http: HttpClient;
   readonly arxivLimiter: RateLimiter;
   readonly hubLimiter: RateLimiter;
+  readonly pwcLimiter: RateLimiter;
   readonly embedder: Embedder;
   /** The vector index for the model of `embedder`. */
   readonly openVectorIndex: (db: Database) => VectorIndex;

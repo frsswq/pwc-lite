@@ -14,6 +14,7 @@ const daily = await readFixture("hf-daily-2026-10-23.json");
 const arxiv = await readFixture("arxiv-batch.xml");
 
 const repos = await readFixture("hf-repos-2610.31329.json");
+const pwcPaper = await readFixture("pwc-paper-2610.31329.json");
 
 const sources = (): FakeHttp =>
   fakeHttp((url) => {
@@ -25,6 +26,10 @@ const sources = (): FakeHttp =>
           pushed_at: null,
         }),
       );
+    }
+
+    if (url === "https://paperswithcode.co/api/v1/papers/arxiv/2610.31329") {
+      return jsonResponse(pwcPaper);
     }
 
     if (url === "https://huggingface.co/api/arxiv/2610.31329/repos") {
@@ -183,7 +188,31 @@ describe("pwc", () => {
       "Hugging Face Hub: 0 papers discovered, 5 papers refreshed, 6 links.",
     );
     expect(all.stderr).toContain("GitHub: 3 repositories refreshed, 0 gone.");
-    expect(Object.keys(JSON.parse(all.stdout))).toEqual(["daily", "arxiv", "hub", "github"]);
+    expect(all.stderr).toContain(
+      "Papers with Code: 1 papers with 12 tasks and methods, 4 not found.",
+    );
+    expect(Object.keys(JSON.parse(all.stdout))).toEqual(["daily", "arxiv", "hub", "github", "pwc"]);
+
+    const show = await run("show", "2610.31329");
+
+    expect(show.stdout).toContain("Tasks: Image Matting, Image segmentation, Image Understanding,");
+    expect(show.stdout).toContain(
+      "Methods: Online Reinforcement Learning (Online RL), Supervised Fine-Tuning (SFT),",
+    );
+
+    const byTask = async (...filter: string[]) =>
+      JSON.parse((await run("search", "pixel", "--mode", "keyword", "--json", ...filter)).stdout)
+        .length;
+
+    expect(await byTask("--task", "Object Detection")).toBe(1);
+    expect(
+      await byTask("--task", "object-detection", "--method", "vision-language-model-vlm"),
+    ).toBe(1);
+    expect(await byTask("--task", "speech-recognition")).toBe(0);
+
+    const again = await run("ingest", "pwc");
+
+    expect(again.stderr).toBe("Papers with Code: 0 papers with 0 tasks and methods, 0 not found.");
     expect((await run("ingest", "all", "--limit", "3")).code).toBe(2);
   });
 

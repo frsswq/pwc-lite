@@ -1,3 +1,4 @@
+import { toConceptSlug } from "../../domain/paper";
 import { countPendingEmbeddings } from "../../ingest/embed";
 import { type RankedHit, rankedSearch, searchModes } from "../../query/ranking";
 import { parseCommandArgs, readChoice, readDate, readPositiveInt } from "../args";
@@ -23,7 +24,7 @@ export const formatExplain = ({ score, parts }: RankedHit): string =>
 export const searchCommand: Command = {
   name: "search",
   usage:
-    "pwc search <query> [--mode keyword|semantic|hybrid] [--limit <n>] [--since <YYYY-MM-DD>] [--saved] [--tag <tag>] [--explain] [--json]",
+    "pwc search <query> [--mode keyword|semantic|hybrid] [--limit <n>] [--since <YYYY-MM-DD>] [--saved] [--tag <tag>] [--task <task>] [--method <method>] [--explain] [--json]",
   summary: "Search titles, abstracts, and authors by keywords and meaning",
   run: async (args, context, db) => {
     const { values, positionals } = parseCommandArgs(args, {
@@ -32,6 +33,8 @@ export const searchCommand: Command = {
       since: { type: "string" },
       saved: { type: "boolean" },
       tag: { type: "string" },
+      task: { type: "string" },
+      method: { type: "string" },
       explain: { type: "boolean" },
       json: { type: "boolean" },
     });
@@ -52,6 +55,8 @@ export const searchCommand: Command = {
           saved: values.saved === true,
           tag: values.tag === undefined ? null : readTag(values.tag),
           ingestedAfter: null,
+          task: values.task === undefined ? null : toConceptSlug(values.task),
+          method: values.method === undefined ? null : toConceptSlug(values.method),
         },
         now: context.now(),
       },

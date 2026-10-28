@@ -4,6 +4,7 @@ import { pendingArxivIds, storeArxivPapers } from "../../ingest/arxiv";
 import { ingestDaily } from "../../ingest/hf-daily";
 import { ingestGithub } from "../../ingest/github";
 import { ingestHub } from "../../ingest/hf-hub";
+import { ingestConcepts } from "../../ingest/pwc";
 import { UsageError, onePositional, parseCommandArgs, readDate, readPositiveInt } from "../args";
 import type { CliContext, Command } from "../context";
 import { defaultRetentionDays } from "./prune";
@@ -115,11 +116,26 @@ const runGithub = async (values: IngestValues, context: CliContext, db: Database
   return { github };
 };
 
-/** Runs every source in dependency order: papers first, then their links. */
+const runPwc = async (values: IngestValues, context: CliContext, db: Database) => {
+  const pwc = await ingestConcepts(db, context.http, context.pwcLimiter, {
+    now: context.now().toISOString(),
+    limit: readPositiveInt("limit", values.limit, 200),
+    staleDays: readPositiveInt("stale-days", values["stale-days"], 30),
+    retryDays: 3,
+  });
+
+  context.stderr(
+    `Papers with Code: ${pwc.found} papers with ${pwc.concepts} tasks and methods, ${pwc.notFound} not found.`,
+  );
+
+  return { pwc };
+};
+
+/** Runs every source in dependency order: papers first, then their links and tags. */
 const runAll = async (values: IngestValues, context: CliContext, db: Database) => {
   if (values.limit !== undefined) {
     throw new UsageError(
-      "--limit counts papers for hub and repositories for github, so ingest all does not accept it",
+      "--limit counts papers for hub and pwc and repositories for github, so ingest all does not accept it",
     );
   }
 
@@ -127,10 +143,17 @@ const runAll = async (values: IngestValues, context: CliContext, db: Database) =
     ...(await runDaily(values, context, db)),
     ...(await runHub(values, context, db)),
     ...(await runGithub(values, context, db)),
+    ...(await runPwc(values, context, db)),
   };
 };
 
-const sources = { daily: runDaily, hub: runHub, github: runGithub, all: runAll } as const;
+const sources = {
+  daily: runDaily,
+  hub: runHub,
+  github: runGithub,
+  pwc: runPwc,
+  all: runAll,
+} as const;
 
 const isSource = (name: string): name is keyof typeof sources => Object.hasOwn(sources, name);
 
@@ -139,8 +162,9 @@ export const ingestCommand: Command = {
   usage: `pwc ingest daily [--since <YYYY-MM-DD>] [--lookback <days>] [--skip-arxiv] [--json]
   pwc ingest hub [--limit <papers>] [--stale-days <n>] [--skip-discover] [--json]
   pwc ingest github [--limit <repositories>] [--stale-days <n>] [--json]
+  pwc ingest pwc [--limit <papers>] [--stale-days <n>] [--json]
   pwc ingest all [--since <YYYY-MM-DD>] [--skip-discover] [--json]`,
-  summary: "Fetch papers and links from a source",
+  summary: "Fetch papers, links, and tasks from a source",
   run: async (args, context, db) => {
     const { values, positionals } = parseCommandArgs(args, options);
     const source = onePositional(positionals, "source");

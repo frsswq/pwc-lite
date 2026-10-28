@@ -4,7 +4,7 @@ import { decodeLink, decodePaper, decodeSignal, paperColumns } from "../catalog/
 import { type Database, type SqlRow, sql } from "../db/database";
 import type { ArxivId } from "../domain/arxiv-id";
 import { addDays } from "../domain/dates";
-import type { Link, Paper, Signal } from "../domain/paper";
+import { type Concept, type Link, type Paper, type Signal, conceptKinds } from "../domain/paper";
 import { type PaperFilter, filterCondition } from "./filter";
 
 /** A paper with the values that list views and ranking use. */
@@ -27,7 +27,13 @@ export type PaperDetail = {
   readonly signals: readonly Signal[];
   /** Null when the paper is not saved, noted, or tagged. */
   readonly library: LibraryEntry | null;
+  /** Tasks first, then methods, each by name. */
+  readonly concepts: readonly Concept[];
 };
+
+const conceptRow = z.object({ kind: z.enum(conceptKinds), slug: z.string(), name: z.string() });
+
+const decodeConcept = (row: SqlRow): Concept => conceptRow.parse(row);
 
 /** Every column that `decodeSummary` reads, for a query that gives `papers` the alias `p`. */
 export const summaryColumns = `${paperColumns},
@@ -174,7 +180,16 @@ export const getPaper = async (db: Database, id: ArxivId): Promise<PaperDetail |
     decodeSignal,
   );
 
-  return { paper, links, signals, library: await getLibraryEntry(db, id) };
+  const concepts = await db.all(
+    sql(
+      `SELECT c.kind, c.slug, c.name FROM paper_concepts pc JOIN concepts c ON c.id = pc.concept_id
+       WHERE pc.paper_id = ? ORDER BY c.kind DESC, lower(c.name), c.slug`,
+      [id],
+    ),
+    decodeConcept,
+  );
+
+  return { paper, links, signals, library: await getLibraryEntry(db, id), concepts };
 };
 
 export type RecentOptions = {

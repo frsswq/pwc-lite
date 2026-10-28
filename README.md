@@ -23,7 +23,8 @@ bun test
 bun run pwc ingest daily            # Fetch Daily Papers since the last run, then arXiv metadata
 bun run pwc ingest hub              # Fetch Hub models, datasets, and Spaces that cite papers
 bun run pwc ingest github           # Refresh GitHub stars for linked repositories
-bun run pwc ingest all              # Run the daily, hub, and github sources in sequence
+bun run pwc ingest pwc              # Fetch tasks and methods from Papers with Code
+bun run pwc ingest all              # Run the daily, hub, github, and pwc sources in sequence
 bun run pwc embed                   # Embed new papers for semantic search
 bun run pwc search "video diffusion" --since 2026-01-01
 bun run pwc search "making LLM inference faster" --mode semantic --explain
@@ -35,6 +36,7 @@ bun run pwc note 2610.31329 "Compare with the baseline in section 4"
 bun run pwc tag 2610.31329 vision multimodal
 bun run pwc library --tag vision
 bun run pwc search "pixel perception" --saved
+bun run pwc search "detection" --task "Object Detection" --method dropout
 bun run pwc watch add "speculative decoding"
 bun run pwc watch                   # New papers for each watch since the last run
 bun run pwc prune --dry-run         # Never removes saved, noted, or tagged papers

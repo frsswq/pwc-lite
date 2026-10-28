@@ -104,6 +104,17 @@ export const formatDetail = (detail: PaperDetail): string => {
     sections.push(`Upvotes: ${latest.score} (Daily Papers ${latest.observedOn})`);
   }
 
+  const tasks = detail.concepts.flatMap(({ kind, name }) => (kind === "task" ? [name] : []));
+  const methods = detail.concepts.flatMap(({ kind, name }) => (kind === "method" ? [name] : []));
+
+  if (tasks.length > 0) {
+    sections.push(wrap(`Tasks: ${tasks.join(", ")}`, lineWidth));
+  }
+
+  if (methods.length > 0) {
+    sections.push(wrap(`Methods: ${methods.join(", ")}`, lineWidth));
+  }
+
   if (detail.library !== null) {
     sections.push(formatLibraryEntry(detail.library, ""));
   }

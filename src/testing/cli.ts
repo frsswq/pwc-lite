@@ -49,6 +49,7 @@ export const runTestCli = async (
     http: http.client,
     arxivLimiter: createRateLimiter(3000, http.client.sleep, () => 0),
     hubLimiter: createRateLimiter(250, http.client.sleep, () => 0),
+    pwcLimiter: createRateLimiter(1000, http.client.sleep, () => 0),
     embedder,
     openVectorIndex: (target) => createTableVectorIndex(target, embedder.model),
     listen: (listenOptions) => {

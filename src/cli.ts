@@ -7,6 +7,7 @@ import { openSqliteDatabase } from "./db/sqlite";
 import { createTransformersEmbedder } from "./embed/transformers";
 import { arxivIntervalMs } from "./sources/arxiv";
 import { defaultHttpClient } from "./sources/http";
+import { pwcIntervalMs } from "./sources/pwc";
 import { createRateLimiter } from "./sources/rate-limit";
 import { hubIntervalMs } from "./ingest/hf-hub";
 import { createTableVectorIndex } from "./vectors/table-index";
@@ -25,6 +26,7 @@ const exitCode = await runCli(Bun.argv.slice(2), {
   http: defaultHttpClient,
   arxivLimiter: createRateLimiter(arxivIntervalMs, defaultHttpClient.sleep),
   hubLimiter: createRateLimiter(hubIntervalMs, defaultHttpClient.sleep),
+  pwcLimiter: createRateLimiter(pwcIntervalMs, defaultHttpClient.sleep),
   embedder: createTransformersEmbedder(config.embeddingModel, config.modelCacheDir),
   openVectorIndex: (db) => createTableVectorIndex(db, config.embeddingModel.name),
   listen: (options) => {
