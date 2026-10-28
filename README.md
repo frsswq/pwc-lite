@@ -31,7 +31,16 @@ bun run pwc show 2610.31329
 bun run pwc recent --days 3
 bun run pwc add https://arxiv.org/abs/1706.03762
 bun run pwc prune --dry-run
+bun run pwc serve --port 8787      # JSON API on 127.0.0.1
 ```
+
+The API has these routes:
+
+- `GET /search?q=<query>&mode=hybrid&limit=20&since=YYYY-MM-DD`
+- `GET /papers/<arxiv-id-or-url>`
+- `GET /recent?days=7&limit=30`
+
+A bad parameter gives a 400 response with an `error` message.
 
 Read commands accept `--json`.
 Search uses `--mode hybrid` by default.

@@ -4,6 +4,7 @@ import { ingestCommand } from "./commands/ingest";
 import { pruneCommand } from "./commands/prune";
 import { recentCommand } from "./commands/recent";
 import { searchCommand } from "./commands/search";
+import { serveCommand } from "./commands/serve";
 import { showCommand } from "./commands/show";
 import { UsageError } from "./args";
 import type { CliContext, Command } from "./context";
@@ -16,6 +17,7 @@ export const commands: readonly Command[] = [
   showCommand,
   recentCommand,
   pruneCommand,
+  serveCommand,
 ];
 
 const exitUsage = 2;

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { writeListedLink, writeListedPaper } from "../catalog/write";
 import { type Database, sql } from "../db/database";
 import { arxivId, openTestCatalog, paperRecord } from "../testing/catalog";
+import type { ListenOptions } from "./context";
 import { runTestCli } from "../testing/cli";
 import { type FakeHttp, fakeHttp, jsonResponse, readFixture } from "../testing/fake-http";
 
@@ -124,6 +125,38 @@ describe("pwc", () => {
 
     expect(badMode.code).toBe(2);
     expect(badMode.stderr).toContain("--mode must be one of keyword, semantic, hybrid");
+  });
+
+  test("serve listens on 127.0.0.1 and answers API requests", async () => {
+    await db.batch([
+      writeListedPaper(paperRecord("2610.00001", "Video diffusion"), "hf_daily", now),
+    ]);
+
+    const servers: ListenOptions[] = [];
+
+    const served = await runTestCli(db, http, ["serve", "--port", "9000"], {
+      listen: (options) => void servers.push(options),
+    });
+
+    expect(served).toMatchObject({ code: 0, stderr: "Listening on http://127.0.0.1:9000/" });
+    expect(servers.map(({ hostname, port }) => ({ hostname, port }))).toEqual([
+      { hostname: "127.0.0.1", port: 9000 },
+    ]);
+
+    const [server] = servers;
+
+    if (server === undefined) {
+      throw new Error("Expected one server");
+    }
+
+    const response = await server.fetch(new Request("http://127.0.0.1:9000/papers/2610.00001"));
+
+    expect(response.status).toBe(200);
+    expect(
+      z.object({ paper: z.object({ title: z.string() }) }).parse(await response.json()),
+    ).toEqual({
+      paper: { title: "Video diffusion" },
+    });
   });
 
   test("ingests Hub links and shows them", async () => {
