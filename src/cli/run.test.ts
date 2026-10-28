@@ -166,6 +166,28 @@ describe("pwc", () => {
     });
   });
 
+  test("export cloudflare writes SQL and vector files", async () => {
+    await db.batch([
+      writeListedPaper(paperRecord("2610.00001", "Video diffusion"), "hf_daily", now),
+    ]);
+    await run("embed");
+
+    const files = new Map<string, string>();
+
+    const exported = await runTestCli(db, http, ["export", "cloudflare", "--out", "/tmp/x"], {
+      files,
+    });
+
+    expect(exported.stdout).toContain("Wrote 2 files to /tmp/x.");
+    expect(exported.stdout).toContain(
+      "wrangler d1 execute pwc-lite --remote --file /tmp/x/catalog-001.sql",
+    );
+    expect([...files.keys()]).toEqual(["/tmp/x/catalog-001.sql", "/tmp/x/vectors.ndjson"]);
+    expect(files.get("/tmp/x/catalog-001.sql")).toStartWith("INSERT INTO papers (");
+    expect((await run("export", "d1", "--out", "/tmp/x")).code).toBe(2);
+    expect((await run("export", "cloudflare")).code).toBe(2);
+  });
+
   test("ingests Hub links and shows them", async () => {
     await run("ingest", "daily", "--since", "2026-10-23", "--skip-arxiv");
 

@@ -57,6 +57,39 @@ Hybrid mode merges the keyword and semantic results with reciprocal rank fusion,
 The weights are in `src/query/ranking.ts`.
 Run `bun run pwc help <command>` for the options of a command.
 
+## Cloudflare
+
+The same query core and JSON API run on a Cloudflare Worker with D1, Vectorize, and Workers AI.
+The Worker entry is `src/worker.ts`, and the bindings are in `wrangler.jsonc`.
+
+1. Create the D1 database and the Vectorize index, and put the database ID in `wrangler.jsonc`:
+
+   ```sh
+   wrangler d1 create pwc-lite
+   wrangler vectorize create pwc-lite-bge-small --dimensions 384 --metric cosine
+   ```
+
+2. Apply the migrations. Wrangler reads the same files in `src/db/migrations/`:
+
+   ```sh
+   wrangler d1 migrations apply pwc-lite --remote
+   ```
+
+3. Copy the local catalog. Run each SQL file on a separate day if the catalog is large, because the free plan allows 100,000 rows written each day:
+
+   ```sh
+   bun run pwc export cloudflare --out data/cloudflare
+   wrangler d1 execute pwc-lite --remote --file data/cloudflare/catalog-001.sql
+   wrangler vectorize insert pwc-lite-bge-small --file data/cloudflare/vectors.ndjson
+   ```
+
+4. Deploy with `wrangler deploy`.
+
+The cloud catalog keeps vectors only for papers of the last 270 days, because Vectorize on the free plan stores about 13,000 vectors of 384 dimensions.
+Issue [#17](https://github.com/frsswq/pwc-lite/issues/17) has the free plan limits.
+
+`bun run test:d1` runs the unit tests through the D1 implementation with a fake D1 binding on SQLite.
+
 ## Configuration
 
 | Variable              | Use                                                                                      | Default                      |

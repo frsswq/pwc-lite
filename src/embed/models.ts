@@ -8,6 +8,8 @@ export type EmbeddingModel = {
   readonly queryPrefix: string;
   readonly pooling: "cls" | "mean";
   readonly dimensions: number;
+  /** The same model in Workers AI, or null when Workers AI does not have it. */
+  readonly workersAiId: string | null;
 };
 
 const retrievalPrefix = "Represent this sentence for searching relevant passages: ";
@@ -19,6 +21,7 @@ export const embeddingModels = [
     queryPrefix: retrievalPrefix,
     pooling: "cls",
     dimensions: 384,
+    workersAiId: "@cf/baai/bge-small-en-v1.5",
   },
   {
     name: "all-MiniLM-L6-v2",
@@ -26,6 +29,7 @@ export const embeddingModels = [
     queryPrefix: "",
     pooling: "mean",
     dimensions: 384,
+    workersAiId: null,
   },
   {
     name: "snowflake-arctic-embed-xs",
@@ -33,6 +37,7 @@ export const embeddingModels = [
     queryPrefix: retrievalPrefix,
     pooling: "cls",
     dimensions: 384,
+    workersAiId: null,
   },
 ] as const satisfies readonly EmbeddingModel[];
 

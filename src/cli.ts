@@ -29,6 +29,9 @@ const exitCode = await runCli(Bun.argv.slice(2), {
   pwcLimiter: createRateLimiter(pwcIntervalMs, defaultHttpClient.sleep),
   embedder: createTransformersEmbedder(config.embeddingModel, config.modelCacheDir),
   openVectorIndex: (db) => createTableVectorIndex(db, config.embeddingModel.name),
+  writeFile: async (path, content) => {
+    await Bun.write(path, content, { createPath: true });
+  },
   listen: (options) => {
     const server = Bun.serve(options);
 

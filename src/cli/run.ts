@@ -1,5 +1,6 @@
 import { addCommand } from "./commands/add";
 import { embedCommand } from "./commands/embed";
+import { exportCommand } from "./commands/export";
 import { ingestCommand } from "./commands/ingest";
 import {
   libraryCommand,
@@ -32,6 +33,7 @@ export const commands: readonly Command[] = [
   watchCommand,
   pruneCommand,
   serveCommand,
+  exportCommand,
 ];
 
 const exitUsage = 2;

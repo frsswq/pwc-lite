@@ -10,6 +10,7 @@
   "scripts": {
     "pwc": "bun src/cli.ts",
     "test": "bun test",
+    "test:d1": "PWC_TEST_DB=d1 bun test src",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",

@@ -1,14 +1,22 @@
 import type { Database } from "../db/database";
+import { createD1Database } from "../db/d1";
 import { migrate } from "../db/migrate";
 import { migrations } from "../db/migrations/index";
 import { openSqliteDatabase } from "../db/sqlite";
 import { parseArxivId } from "../domain/arxiv-id";
 import type { ArxivId } from "../domain/arxiv-id";
 import type { PaperRecord } from "../domain/paper";
+import { fakeD1 } from "./fake-d1";
 
-/** Opens an in-memory database with every migration applied. */
+/**
+ * Opens an in-memory database with every migration applied.
+ *
+ * With `PWC_TEST_DB=d1`, the database goes through the D1 implementation and a fake D1 binding,
+ * so that the same tests check both implementations.
+ */
 export const openTestCatalog = async (): Promise<Database> => {
-  const db = openSqliteDatabase(":memory:");
+  const sqlite = openSqliteDatabase(":memory:");
+  const db = Bun.env.PWC_TEST_DB === "d1" ? createD1Database(fakeD1(sqlite)) : sqlite;
 
   await migrate(db, migrations);
 

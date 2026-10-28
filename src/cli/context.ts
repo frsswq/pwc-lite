@@ -28,6 +28,8 @@ export type CliContext = {
   readonly embedder: Embedder;
   /** The vector index for the model of `embedder`. */
   readonly openVectorIndex: (db: Database) => VectorIndex;
+  /** Writes a text file and creates its parent directories. */
+  readonly writeFile: (path: string, content: string) => Promise<void>;
   /** Starts an HTTP server. */
   readonly listen: (options: ListenOptions) => Listener;
   readonly now: () => Date;

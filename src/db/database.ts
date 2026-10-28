@@ -1,5 +1,9 @@
-/** A value that SQLite and D1 can bind as a parameter and return in a column. */
-export type SqlValue = string | number | bigint | Uint8Array | null;
+/**
+ * A value that SQLite and D1 can bind as a parameter and return in a column.
+ *
+ * There is no bigint, because D1 has no 64-bit integer type. Every integer in the catalog fits in a double.
+ */
+export type SqlValue = string | number | Uint8Array | null;
 
 /** One result row before the caller decodes it into a domain type. */
 export type SqlRow = Readonly<Record<string, SqlValue>>;

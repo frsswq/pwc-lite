@@ -16,6 +16,8 @@ export type CliRun = {
 export type TestCliOptions = {
   readonly now?: string;
   readonly embedder?: Embedder;
+  /** Receives each file that the command writes. */
+  readonly files?: Map<string, string>;
   /** Receives the options of each server that the command starts. The server stops at once. */
   readonly listen?: (options: ListenOptions) => void;
 };
@@ -42,6 +44,7 @@ export const runTestCli = async (
         queryPrefix: "",
         pooling: "cls",
         dimensions: 4,
+        workersAiId: null,
       },
       modelCacheDir: "/nonexistent",
     },
@@ -52,6 +55,9 @@ export const runTestCli = async (
     pwcLimiter: createRateLimiter(1000, http.client.sleep, () => 0),
     embedder,
     openVectorIndex: (target) => createTableVectorIndex(target, embedder.model),
+    writeFile: async (path, content) => {
+      options.files?.set(path, content);
+    },
     listen: (listenOptions) => {
       options.listen?.(listenOptions);
 
