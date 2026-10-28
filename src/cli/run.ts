@@ -12,6 +12,7 @@ import { pruneCommand } from "./commands/prune";
 import { recentCommand } from "./commands/recent";
 import { searchCommand } from "./commands/search";
 import { serveCommand } from "./commands/serve";
+import { watchCommand } from "./commands/watch";
 import { showCommand } from "./commands/show";
 import { UsageError } from "./args";
 import type { CliContext, Command } from "./context";
@@ -28,6 +29,7 @@ export const commands: readonly Command[] = [
   noteCommand,
   tagCommand,
   libraryCommand,
+  watchCommand,
   pruneCommand,
   serveCommand,
 ];

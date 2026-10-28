@@ -73,6 +73,7 @@ describe("schema", () => {
       "table:signals",
       "table:tags",
       "table:vectors",
+      "table:watches",
       "trigger:papers_embedding_stale",
       "trigger:papers_fts_after_delete",
       "trigger:papers_fts_after_insert",

@@ -51,6 +51,7 @@ export const searchCommand: Command = {
           since: readDate("since", values.since),
           saved: values.saved === true,
           tag: values.tag === undefined ? null : readTag(values.tag),
+          ingestedAfter: null,
         },
         now: context.now(),
       },

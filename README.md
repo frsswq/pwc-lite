@@ -35,6 +35,8 @@ bun run pwc note 2610.31329 "Compare with the baseline in section 4"
 bun run pwc tag 2610.31329 vision multimodal
 bun run pwc library --tag vision
 bun run pwc search "pixel perception" --saved
+bun run pwc watch add "speculative decoding"
+bun run pwc watch                   # New papers for each watch since the last run
 bun run pwc prune --dry-run         # Never removes saved, noted, or tagged papers
 bun run pwc serve --port 8787      # JSON API on 127.0.0.1
 ```
