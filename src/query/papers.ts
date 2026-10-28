@@ -150,3 +150,22 @@ export const listRecentPapers = async (
     ),
     decodeSummary,
   );
+
+/**
+ * Loads summaries for the given IDs, in no particular order.
+ *
+ * IDs that are not in the catalog, or papers published before `since`, are left out.
+ */
+export const getSummaries = async (
+  db: Database,
+  ids: readonly string[],
+  since: string | null,
+): Promise<PaperSummary[]> =>
+  db.all(
+    sql(
+      `SELECT ${summaryColumns} FROM papers p
+       WHERE p.id IN (SELECT value FROM json_each(?)) AND (? IS NULL OR p.published_at >= ?)`,
+      [JSON.stringify(ids), since, since],
+    ),
+    decodeSummary,
+  );

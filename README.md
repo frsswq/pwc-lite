@@ -26,6 +26,7 @@ bun run pwc ingest github           # Refresh GitHub stars for linked repositori
 bun run pwc ingest all              # Run the daily, hub, and github sources in sequence
 bun run pwc embed                   # Embed new papers for semantic search
 bun run pwc search "video diffusion" --since 2026-01-01
+bun run pwc search "making LLM inference faster" --mode semantic --explain
 bun run pwc show 2610.31329
 bun run pwc recent --days 3
 bun run pwc add https://arxiv.org/abs/1706.03762
@@ -33,6 +34,9 @@ bun run pwc prune --dry-run
 ```
 
 Read commands accept `--json`.
+Search uses `--mode hybrid` by default.
+Hybrid mode merges the keyword and semantic results with reciprocal rank fusion, then adds small boosts for recency, links, and popularity.
+The weights are in `src/query/ranking.ts`.
 Run `bun run pwc help <command>` for the options of a command.
 
 ## Configuration

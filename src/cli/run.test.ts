@@ -96,6 +96,36 @@ describe("pwc", () => {
     expect(show.stdout).toContain("Upvotes: 255 (Daily Papers 2026-10-23)");
   });
 
+  test("search explains hybrid scores, warns about missing vectors, and checks the mode", async () => {
+    await run("ingest", "daily", "--since", "2026-10-23", "--skip-arxiv");
+
+    const before = await run("search", "pixel", "perception");
+
+    expect(before.stderr).toBe(
+      '5 papers have no vector for test-model. Run "pwc embed" to include them.',
+    );
+    expect((await run("search", "pixel", "--mode", "keyword")).stderr).toBe("");
+
+    await run("embed");
+
+    const explained = await run("search", "pixel", "perception", "--explain", "--limit", "2");
+    const lines = explained.stdout.split("\n").filter((line) => line.includes("score "));
+    const scores = lines.map((line) => Number(line.match(/score ([\d.]+)/)?.[1]));
+
+    expect(explained.stderr).toBe("");
+    expect(explained.stdout).toStartWith("2610.31329  2026-10-22  ↑255 ★291\n");
+    expect(lines).toHaveLength(2);
+    expect(lines[0]).toMatch(
+      /^ {12}score [\d.]+ = keyword [\d.]+ \(#1\) \+ semantic [\d.]+ \(#\d+\)/,
+    );
+    expect(scores).toEqual(scores.toSorted((left, right) => right - left));
+
+    const badMode = await run("search", "x", "--mode", "fuzzy");
+
+    expect(badMode.code).toBe(2);
+    expect(badMode.stderr).toContain("--mode must be one of keyword, semantic, hybrid");
+  });
+
   test("ingests Hub links and shows them", async () => {
     await run("ingest", "daily", "--since", "2026-10-23", "--skip-arxiv");
 

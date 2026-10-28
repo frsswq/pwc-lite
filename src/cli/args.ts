@@ -59,3 +59,22 @@ export const onePositional = (positionals: readonly string[], label: string): st
 
   return value;
 };
+
+export const readChoice = <Choice extends string>(
+  name: string,
+  text: string | undefined,
+  choices: readonly Choice[],
+  fallback: Choice,
+): Choice => {
+  if (text === undefined) {
+    return fallback;
+  }
+
+  const choice = choices.find((entry) => entry === text);
+
+  if (choice === undefined) {
+    throw new UsageError(`--${name} must be one of ${choices.join(", ")}, got "${text}"`);
+  }
+
+  return choice;
+};
