@@ -1,4 +1,5 @@
 import { addCommand } from "./commands/add";
+import { embedCommand } from "./commands/embed";
 import { ingestCommand } from "./commands/ingest";
 import { pruneCommand } from "./commands/prune";
 import { recentCommand } from "./commands/recent";
@@ -10,6 +11,7 @@ import type { CliContext, Command } from "./context";
 export const commands: readonly Command[] = [
   ingestCommand,
   addCommand,
+  embedCommand,
   searchCommand,
   showCommand,
   recentCommand,

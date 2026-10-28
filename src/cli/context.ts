@@ -1,7 +1,9 @@
 import type { Config } from "../config";
 import type { Database } from "../db/database";
+import type { Embedder } from "../embed/embedder";
 import type { HttpClient } from "../sources/http";
 import type { RateLimiter } from "../sources/rate-limit";
+import type { VectorIndex } from "../vectors/vector-index";
 
 export type CliContext = {
   readonly config: Config;
@@ -10,6 +12,9 @@ export type CliContext = {
   readonly http: HttpClient;
   readonly arxivLimiter: RateLimiter;
   readonly hubLimiter: RateLimiter;
+  readonly embedder: Embedder;
+  /** The vector index for the model of `embedder`. */
+  readonly openVectorIndex: (db: Database) => VectorIndex;
   readonly now: () => Date;
   readonly stdout: (text: string) => void;
   readonly stderr: (text: string) => void;

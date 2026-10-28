@@ -54,17 +54,22 @@ describe("schema", () => {
     );
 
     expect(objects).toEqual([
+      "index:embeddings_model",
       "index:links_kind_external_id",
       "index:papers_hub_fetched_at",
       "index:papers_ingested_at",
       "index:papers_published_at",
       "index:signals_observed_on",
+      "index:vectors_model",
+      "table:embeddings",
       "table:ingest_cursors",
       "table:links",
       "table:papers",
       "table:papers_fts",
       "table:schema_migrations",
       "table:signals",
+      "table:vectors",
+      "trigger:papers_embedding_stale",
       "trigger:papers_fts_after_delete",
       "trigger:papers_fts_after_insert",
       "trigger:papers_fts_after_update",

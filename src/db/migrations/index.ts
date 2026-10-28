@@ -1,6 +1,7 @@
 import type { Migration } from "../migrate";
 import initial from "./0001_initial.sql" with { type: "text" };
 import hubFetchedAt from "./0002_hub_fetched_at.sql" with { type: "text" };
+import embeddings from "./0003_embeddings.sql" with { type: "text" };
 
 /**
  * Every migration in apply order.
@@ -10,4 +11,5 @@ import hubFetchedAt from "./0002_hub_fetched_at.sql" with { type: "text" };
 export const migrations: readonly Migration[] = [
   { name: "0001_initial", text: initial },
   { name: "0002_hub_fetched_at", text: hubFetchedAt },
+  { name: "0003_embeddings", text: embeddings },
 ];

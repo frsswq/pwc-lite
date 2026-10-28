@@ -12,7 +12,7 @@ The planned work is in the [milestones](https://github.com/frsswq/pwc-lite/miles
 ## Setup
 
 ```sh
-bun install
+bun install                         # The onnxruntime-node postinstall is not necessary for CPU use
 bun run check
 bun test
 ```
@@ -24,6 +24,7 @@ bun run pwc ingest daily            # Fetch Daily Papers since the last run, the
 bun run pwc ingest hub              # Fetch Hub models, datasets, and Spaces that cite papers
 bun run pwc ingest github           # Refresh GitHub stars for linked repositories
 bun run pwc ingest all              # Run the daily, hub, and github sources in sequence
+bun run pwc embed                   # Embed new papers for semantic search
 bun run pwc search "video diffusion" --since 2026-01-01
 bun run pwc show 2610.31329
 bun run pwc recent --days 3
@@ -36,11 +37,13 @@ Run `bun run pwc help <command>` for the options of a command.
 
 ## Configuration
 
-| Variable           | Use                                                       | Default                      |
-| ------------------ | --------------------------------------------------------- | ---------------------------- |
-| `PWC_DB_PATH`      | Path of the SQLite catalog                                | `data/pwc.db` in the project |
-| `PWC_HF_TOKEN`     | Hugging Face token for higher rate limits                 | Not set                      |
-| `PWC_GITHUB_TOKEN` | GitHub token for 5000 requests in each hour instead of 60 | Not set                      |
+| Variable              | Use                                                                                      | Default                      |
+| --------------------- | ---------------------------------------------------------------------------------------- | ---------------------------- |
+| `PWC_DB_PATH`         | Path of the SQLite catalog                                                               | `data/pwc.db` in the project |
+| `PWC_HF_TOKEN`        | Hugging Face token for higher rate limits                                                | Not set                      |
+| `PWC_EMBED_MODEL`     | Embedding model: `bge-small-en-v1.5`, `all-MiniLM-L6-v2`, or `snowflake-arctic-embed-xs` | `bge-small-en-v1.5`          |
+| `PWC_MODEL_CACHE_DIR` | Directory for downloaded model files                                                     | `data/models` in the project |
+| `PWC_GITHUB_TOKEN`    | GitHub token for 5000 requests in each hour instead of 60                                | Not set                      |
 
 ## Tooling
 

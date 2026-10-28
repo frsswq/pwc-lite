@@ -26,6 +26,9 @@ export const pruneCommand: Command = {
       return;
     }
 
-    context.stdout(`Removed ${await prunePapers(db, cutoff)} papers published before ${cutoff}.`);
+    const removed = await prunePapers(db, cutoff);
+
+    await context.openVectorIndex(db).delete(removed);
+    context.stdout(`Removed ${removed.length} papers published before ${cutoff}.`);
   },
 };

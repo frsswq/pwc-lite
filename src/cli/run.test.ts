@@ -1,10 +1,13 @@
 import { beforeEach, describe, expect, test } from "bun:test";
+import { z } from "zod";
 
 import { writeListedLink, writeListedPaper } from "../catalog/write";
-import type { Database } from "../db/database";
+import { type Database, sql } from "../db/database";
 import { arxivId, openTestCatalog, paperRecord } from "../testing/catalog";
 import { runTestCli } from "../testing/cli";
 import { type FakeHttp, fakeHttp, jsonResponse, readFixture } from "../testing/fake-http";
+
+const now = "2026-10-24T08:00:00.000Z";
 
 const daily = await readFixture("hf-daily-2026-10-23.json");
 const arxiv = await readFixture("arxiv-batch.xml");
@@ -35,16 +38,6 @@ const sources = (): FakeHttp =>
       return jsonResponse(url.endsWith("2026-10-23") ? daily : "[]");
     }
 
-    if (url.startsWith("https://api.github.com/repos/")) {
-      return new Response(
-        JSON.stringify({
-          html_url: "https://github.com/x/y",
-          stargazers_count: 7,
-          pushed_at: null,
-        }),
-      );
-    }
-
     if (
       url.startsWith("https://huggingface.co/api/models?") ||
       url.startsWith("https://huggingface.co/api/datasets?")
@@ -65,6 +58,9 @@ describe("pwc", () => {
   });
 
   const run = async (...argv: string[]) => runTestCli(db, http, argv);
+
+  const vectorIds = async () =>
+    db.all(sql("SELECT id FROM vectors ORDER BY id"), (row) => z.string().parse(row.id));
 
   test("prints help and rejects unknown commands", async () => {
     const help = await run();
@@ -193,6 +189,9 @@ describe("pwc", () => {
       }),
     ]);
 
+    expect((await run("embed")).stdout).toBe(
+      "Embedded 3 papers with test-model. 0 papers have no current vector.",
+    );
     expect((await run("prune", "--dry-run")).stdout).toBe(
       "Would remove 1 papers published before 2025-10-24.",
     );
@@ -200,5 +199,26 @@ describe("pwc", () => {
     expect((await run("show", "2301.00001")).code).toBe(0);
     expect((await run("show", "2301.00002")).code).toBe(1);
     expect((await run("show", "2610.00003")).code).toBe(0);
+    expect(await vectorIds()).toEqual(["2301.00001", "2610.00003"]);
+  });
+
+  test("embed embeds new papers once and reports JSON", async () => {
+    await db.batch([
+      writeListedPaper(paperRecord("2610.00001", "Video diffusion"), "hf_daily", now),
+      writeListedPaper(paperRecord("2610.00002", "Robot learning"), "hf_daily", now),
+    ]);
+
+    expect(JSON.parse((await run("embed", "--limit", "1", "--json")).stdout)).toEqual({
+      model: "test-model",
+      embedded: 1,
+      remaining: 1,
+    });
+    expect((await run("embed")).stdout).toBe(
+      "Embedded 1 papers with test-model. 0 papers have no current vector.",
+    );
+    expect((await run("embed")).stdout).toBe(
+      "Embedded 0 papers with test-model. 0 papers have no current vector.",
+    );
+    expect(await vectorIds()).toEqual(["2610.00001", "2610.00002"]);
   });
 });

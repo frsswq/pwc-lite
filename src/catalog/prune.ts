@@ -14,6 +14,16 @@ export const countPrunable = async (db: Database, cutoff: string): Promise<numbe
     (row) => countRow.parse(row).count,
   )) ?? 0;
 
-/** Removes prunable papers. Their signals go with them through ON DELETE CASCADE. */
-export const prunePapers = async (db: Database, cutoff: string): Promise<number> =>
-  (await db.run(sql(`DELETE FROM papers WHERE ${prunable}`, [cutoff]))).changes;
+const idRow = z.object({ id: z.string() });
+
+/**
+ * Removes prunable papers and returns their IDs.
+ *
+ * Signals and embedding records go with them through ON DELETE CASCADE.
+ * The caller removes their vectors from the VectorIndex.
+ */
+export const prunePapers = async (db: Database, cutoff: string): Promise<string[]> =>
+  db.all(
+    sql(`DELETE FROM papers WHERE ${prunable} RETURNING id`, [cutoff]),
+    (row) => idRow.parse(row).id,
+  );
