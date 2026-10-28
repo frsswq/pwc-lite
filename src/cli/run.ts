@@ -1,6 +1,13 @@
 import { addCommand } from "./commands/add";
 import { embedCommand } from "./commands/embed";
 import { ingestCommand } from "./commands/ingest";
+import {
+  libraryCommand,
+  noteCommand,
+  saveCommand,
+  tagCommand,
+  unsaveCommand,
+} from "./commands/library";
 import { pruneCommand } from "./commands/prune";
 import { recentCommand } from "./commands/recent";
 import { searchCommand } from "./commands/search";
@@ -16,6 +23,11 @@ export const commands: readonly Command[] = [
   searchCommand,
   showCommand,
   recentCommand,
+  saveCommand,
+  unsaveCommand,
+  noteCommand,
+  tagCommand,
+  libraryCommand,
   pruneCommand,
   serveCommand,
 ];

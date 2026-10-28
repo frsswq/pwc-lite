@@ -19,5 +19,14 @@ export const dumpCatalog = async (db: Database) => {
 
   const cursors = await db.all(sql("SELECT * FROM ingest_cursors ORDER BY source"), keepRow);
 
-  return { papers, links, signals, cursors };
+  const embeddings = await db.all(sql("SELECT * FROM embeddings ORDER BY paper_id"), keepRow);
+  const library = await db.all(sql("SELECT * FROM library ORDER BY paper_id"), keepRow);
+  const tags = await db.all(sql("SELECT * FROM tags ORDER BY id"), keepRow);
+
+  const paperTags = await db.all(
+    sql("SELECT * FROM paper_tags ORDER BY paper_id, tag_id"),
+    keepRow,
+  );
+
+  return { papers, links, signals, cursors, embeddings, library, tags, paperTags };
 };

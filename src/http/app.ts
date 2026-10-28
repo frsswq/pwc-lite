@@ -5,6 +5,7 @@ import type { Database } from "../db/database";
 import { parseArxivId } from "../domain/arxiv-id";
 import { isIsoDate, utcDate } from "../domain/dates";
 import type { Embedder } from "../embed/embedder";
+import { noFilter } from "../query/filter";
 import { getPaper, listRecentPapers } from "../query/papers";
 import { rankedSearch, searchModes } from "../query/ranking";
 import type { VectorIndex } from "../vectors/vector-index";
@@ -72,7 +73,7 @@ export const createApp = (dependencies: AppDependencies): Hono => {
         query: query.data.q,
         mode: query.data.mode,
         limit: query.data.limit,
-        since: query.data.since ?? null,
+        filter: { ...noFilter, since: query.data.since ?? null },
         now: dependencies.now(),
       },
     );

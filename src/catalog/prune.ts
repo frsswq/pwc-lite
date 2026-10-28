@@ -4,7 +4,9 @@ import { type Database, sql } from "../db/database";
 
 /** Papers that prune may remove: older than the cutoff and with nothing that the user or a source attached. */
 const prunable = `coalesce(published_at, ingested_at) < ?
-  AND NOT EXISTS (SELECT 1 FROM links WHERE links.paper_id = papers.id)`;
+  AND NOT EXISTS (SELECT 1 FROM links WHERE links.paper_id = papers.id)
+  AND NOT EXISTS (SELECT 1 FROM library WHERE library.paper_id = papers.id)
+  AND NOT EXISTS (SELECT 1 FROM paper_tags WHERE paper_tags.paper_id = papers.id)`;
 
 const countRow = z.object({ count: z.number().int() });
 

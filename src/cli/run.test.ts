@@ -67,7 +67,9 @@ describe("pwc", () => {
     const help = await run();
 
     expect(help.code).toBe(0);
-    expect(help.stdout).toContain("search  Search titles, abstracts, and authors");
+    expect(help.stdout).toContain(
+      "search   Search titles, abstracts, and authors by keywords and meaning",
+    );
     expect((await run("help", "search")).stdout).toContain("pwc search <query>");
     expect((await run("search", "--help")).stdout).toContain("pwc search <query>");
     expect((await run("fly")).code).toBe(2);

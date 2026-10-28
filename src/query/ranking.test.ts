@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 
+import { noFilter } from "./filter";
 import { writeListedPaper, writeSignal } from "../catalog/write";
 import type { Database } from "../db/database";
 import { embedPapers } from "../ingest/embed";
@@ -154,7 +155,7 @@ describe("rankedSearch", () => {
     rankedSearch(
       db,
       { embedder, index: createTableVectorIndex(db, embedder.model) },
-      { query, mode, limit: 10, since: null, now },
+      { query, mode, limit: 10, filter: noFilter, now },
     );
 
   test("keyword mode uses only the keyword list", async () => {
@@ -183,7 +184,13 @@ describe("rankedSearch", () => {
     const hits = await rankedSearch(
       db,
       { embedder, index: createTableVectorIndex(db, embedder.model) },
-      { query: "robot", mode: "semantic", limit: 10, since: "2026-10-21", now },
+      {
+        query: "robot",
+        mode: "semantic",
+        limit: 10,
+        filter: { ...noFilter, since: "2026-10-21" },
+        now,
+      },
     );
 
     expect(hits).toEqual([]);

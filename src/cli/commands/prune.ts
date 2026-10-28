@@ -8,7 +8,7 @@ export const defaultRetentionDays = 365;
 export const pruneCommand: Command = {
   name: "prune",
   usage: "pwc prune [--days <n>] [--dry-run]",
-  summary: "Remove old papers that have no links",
+  summary: "Remove old papers that have no links and are not in the library",
   run: async (args, context, db) => {
     const { values } = parseCommandArgs(args, {
       days: { type: "string" },

@@ -2,6 +2,7 @@ import { countPendingEmbeddings } from "../../ingest/embed";
 import { type RankedHit, rankedSearch, searchModes } from "../../query/ranking";
 import { parseCommandArgs, readChoice, readDate, readPositiveInt } from "../args";
 import type { Command } from "../context";
+import { readTag } from "./library";
 import { formatSummary } from "../format";
 
 const decimals = 5;
@@ -22,13 +23,15 @@ export const formatExplain = ({ score, parts }: RankedHit): string =>
 export const searchCommand: Command = {
   name: "search",
   usage:
-    "pwc search <query> [--mode keyword|semantic|hybrid] [--limit <n>] [--since <YYYY-MM-DD>] [--explain] [--json]",
+    "pwc search <query> [--mode keyword|semantic|hybrid] [--limit <n>] [--since <YYYY-MM-DD>] [--saved] [--tag <tag>] [--explain] [--json]",
   summary: "Search titles, abstracts, and authors by keywords and meaning",
   run: async (args, context, db) => {
     const { values, positionals } = parseCommandArgs(args, {
       mode: { type: "string" },
       limit: { type: "string" },
       since: { type: "string" },
+      saved: { type: "boolean" },
+      tag: { type: "string" },
       explain: { type: "boolean" },
       json: { type: "boolean" },
     });
@@ -44,7 +47,11 @@ export const searchCommand: Command = {
         query,
         mode,
         limit: readPositiveInt("limit", values.limit, 20),
-        since: readDate("since", values.since),
+        filter: {
+          since: readDate("since", values.since),
+          saved: values.saved === true,
+          tag: values.tag === undefined ? null : readTag(values.tag),
+        },
         now: context.now(),
       },
     );

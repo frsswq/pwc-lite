@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 
+import { noFilter } from "./filter";
 import { writeListedLink, writeListedPaper, writeSignal } from "../catalog/write";
 import type { Database } from "../db/database";
 import type { PaperRecord } from "../domain/paper";
@@ -105,7 +106,7 @@ describe("searchPapers", () => {
   });
 
   test("ranks a title match before an abstract-only match", async () => {
-    const hits = await searchPapers(db, { query: "retrieval", limit: 10, since: null });
+    const hits = await searchPapers(db, { query: "retrieval", limit: 10, filter: noFilter });
 
     expect(ids(hits)).toEqual(["2610.00001", "2610.00002"]);
     expect(hits[0]?.relevance).toBeGreaterThan(hits[1]?.relevance ?? Infinity);
@@ -113,28 +114,34 @@ describe("searchPapers", () => {
 
   test("matches word stems and requires every word", async () => {
     expect(
-      ids(await searchPapers(db, { query: "retrieve contexts", limit: 10, since: null })),
+      ids(await searchPapers(db, { query: "retrieve contexts", limit: 10, filter: noFilter })),
     ).toEqual(["2610.00002"]);
   });
 
   test("returns summary values with each hit", async () => {
-    const [hit] = await searchPapers(db, { query: "sparse", limit: 10, since: null });
+    const [hit] = await searchPapers(db, { query: "sparse", limit: 10, filter: noFilter });
 
     expect(hit).toMatchObject({ upvotes: 9, githubStars: 42, linkCount: 2 });
   });
 
   test("applies the since and limit filters", async () => {
     expect(
-      ids(await searchPapers(db, { query: "retrieval", limit: 10, since: "2026-10-21" })),
+      ids(
+        await searchPapers(db, {
+          query: "retrieval",
+          limit: 10,
+          filter: { ...noFilter, since: "2026-10-21" },
+        }),
+      ),
     ).toEqual(["2610.00002"]);
-    expect(ids(await searchPapers(db, { query: "retrieval", limit: 1, since: null }))).toEqual([
-      "2610.00001",
-    ]);
+    expect(ids(await searchPapers(db, { query: "retrieval", limit: 1, filter: noFilter }))).toEqual(
+      ["2610.00001"],
+    );
   });
 
   test("accepts input with FTS5 syntax characters", async () => {
     for (const query of ['"', "retrieval*", "a OR", "(", "NEAR(", "title:", "-", "^"]) {
-      await expect(searchPapers(db, { query, limit: 10, since: null })).resolves.toBeArray();
+      await expect(searchPapers(db, { query, limit: 10, filter: noFilter })).resolves.toBeArray();
     }
   });
 });

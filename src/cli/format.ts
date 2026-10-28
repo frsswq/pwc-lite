@@ -1,5 +1,6 @@
 import type { Link, Paper } from "../domain/paper";
-import type { PaperDetail, PaperSummary } from "../query/papers";
+import type { LibraryItem } from "../query/library";
+import type { LibraryEntry, PaperDetail, PaperSummary } from "../query/papers";
 
 const lineWidth = 88;
 const maxAuthors = 3;
@@ -103,5 +104,30 @@ export const formatDetail = (detail: PaperDetail): string => {
     sections.push(`Upvotes: ${latest.score} (Daily Papers ${latest.observedOn})`);
   }
 
+  if (detail.library !== null) {
+    sections.push(formatLibraryEntry(detail.library, ""));
+  }
+
   return sections.join("\n\n");
 };
+
+/** Formats the saved state, tags, and note of a paper, one per line. */
+export const formatLibraryEntry = (entry: LibraryEntry, indent: string): string => {
+  const lines = [
+    entry.savedAt === null ? null : `Saved: ${shortDate(entry.savedAt)}`,
+    entry.tags.length === 0 ? null : `Tags: ${entry.tags.join(", ")}`,
+    entry.note === null ? null : wrap(`Note: ${entry.note}`, lineWidth, indent).trimStart(),
+  ];
+
+  return lines.flatMap((line) => (line === null ? [] : [indent + line])).join("\n");
+};
+
+export const formatLibrary = (items: readonly LibraryItem[]): string =>
+  items.length === 0
+    ? "The library is empty."
+    : items
+        .map(
+          (item) =>
+            `${formatSummary(item)}\n${formatLibraryEntry(item.library, " ".repeat(idWidth + 2))}`,
+        )
+        .join("\n\n");

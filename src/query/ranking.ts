@@ -1,6 +1,7 @@
 import type { Database } from "../db/database";
 import type { Embedder } from "../embed/embedder";
 import type { VectorIndex } from "../vectors/vector-index";
+import type { PaperFilter } from "./filter";
 import { type PaperSummary, getSummaries, searchPapers } from "./papers";
 
 export const searchModes = ["keyword", "semantic", "hybrid"] as const;
@@ -119,8 +120,7 @@ export type RankedSearchOptions = {
   readonly query: string;
   readonly mode: SearchMode;
   readonly limit: number;
-  /** Earliest publication date as `YYYY-MM-DD`. */
-  readonly since: string | null;
+  readonly filter: PaperFilter;
   readonly now: Date;
 };
 
@@ -134,7 +134,7 @@ const semanticList = async (
   db: Database,
   semantic: SemanticSearch,
   query: string,
-  since: string | null,
+  filter: PaperFilter,
 ): Promise<PaperSummary[]> => {
   if (query.trim() === "") {
     return [];
@@ -150,7 +150,7 @@ const semanticList = async (
       await getSummaries(
         db,
         matches.map(({ id }) => id),
-        since,
+        filter,
       )
     ).map((summary) => [summary.paper.id, summary]),
   );
@@ -170,13 +170,13 @@ export const rankedSearch = async (
       : await searchPapers(db, {
           query: options.query,
           limit: rankingWeights.candidates,
-          since: options.since,
+          filter: options.filter,
         });
 
   const similar =
     options.mode === "keyword"
       ? []
-      : await semanticList(db, semantic, options.query, options.since);
+      : await semanticList(db, semantic, options.query, options.filter);
 
   return fuseRankings(keyword, similar, { now: options.now, limit: options.limit });
 };

@@ -30,7 +30,12 @@ bun run pwc search "making LLM inference faster" --mode semantic --explain
 bun run pwc show 2610.31329
 bun run pwc recent --days 3
 bun run pwc add https://arxiv.org/abs/1706.03762
-bun run pwc prune --dry-run
+bun run pwc save 2610.31329
+bun run pwc note 2610.31329 "Compare with the baseline in section 4"
+bun run pwc tag 2610.31329 vision multimodal
+bun run pwc library --tag vision
+bun run pwc search "pixel perception" --saved
+bun run pwc prune --dry-run         # Never removes saved, noted, or tagged papers
 bun run pwc serve --port 8787      # JSON API on 127.0.0.1
 ```
 
