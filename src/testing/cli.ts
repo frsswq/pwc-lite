@@ -21,7 +21,7 @@ export const runTestCli = async (
   const stderr: string[] = [];
 
   const context: CliContext = {
-    config: { databasePath: ":memory:", hfToken: null },
+    config: { databasePath: ":memory:", hfToken: null, githubToken: null },
     openDatabase: async () => ({ ...db, close: async () => undefined }),
     http: http.client,
     arxivLimiter: createRateLimiter(3000, http.client.sleep, () => 0),

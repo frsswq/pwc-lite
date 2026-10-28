@@ -20,4 +20,6 @@ test("reads PWC_DB_PATH", () => {
 test("reads tokens and treats empty values as unset", () => {
   expect(loadConfig({ PWC_HF_TOKEN: "hf_x" }).hfToken).toBe("hf_x");
   expect(loadConfig({ PWC_HF_TOKEN: "" }).hfToken).toBeNull();
+  expect(loadConfig({ PWC_GITHUB_TOKEN: "gh_x" }).githubToken).toBe("gh_x");
+  expect(loadConfig({}).githubToken).toBeNull();
 });

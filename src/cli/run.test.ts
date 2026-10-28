@@ -13,6 +13,16 @@ const repos = await readFixture("hf-repos-2610.31329.json");
 
 const sources = (): FakeHttp =>
   fakeHttp((url) => {
+    if (url.startsWith("https://api.github.com/repos/")) {
+      return new Response(
+        JSON.stringify({
+          html_url: "https://github.com/x/y",
+          stargazers_count: 7,
+          pushed_at: null,
+        }),
+      );
+    }
+
     if (url === "https://huggingface.co/api/arxiv/2610.31329/repos") {
       return jsonResponse(repos);
     }
@@ -23,6 +33,23 @@ const sources = (): FakeHttp =>
 
     if (url.startsWith("https://huggingface.co/api/daily_papers?date=")) {
       return jsonResponse(url.endsWith("2026-10-23") ? daily : "[]");
+    }
+
+    if (url.startsWith("https://api.github.com/repos/")) {
+      return new Response(
+        JSON.stringify({
+          html_url: "https://github.com/x/y",
+          stargazers_count: 7,
+          pushed_at: null,
+        }),
+      );
+    }
+
+    if (
+      url.startsWith("https://huggingface.co/api/models?") ||
+      url.startsWith("https://huggingface.co/api/datasets?")
+    ) {
+      return jsonResponse("[]");
     }
 
     return url.startsWith("https://export.arxiv.org/api/query?") ? new Response(arxiv) : undefined;
@@ -83,6 +110,20 @@ describe("pwc", () => {
     expect((await run("show", "2610.31329")).stdout).toContain(
       "hf_model      https://huggingface.co/tencent/WeVisOne-VL-4B  67",
     );
+  });
+
+  test("ingests every source with ingest all", async () => {
+    const all = await run("ingest", "all", "--since", "2026-10-23", "--json");
+
+    expect(all.stderr).not.toContain("Error");
+    expect(all.code).toBe(0);
+    expect(all.stderr).toContain("Daily Papers: 2 dates, 5 entries");
+    expect(all.stderr).toContain(
+      "Hugging Face Hub: 0 papers discovered, 5 papers refreshed, 6 links.",
+    );
+    expect(all.stderr).toContain("GitHub: 3 repositories refreshed, 0 gone.");
+    expect(Object.keys(JSON.parse(all.stdout))).toEqual(["daily", "arxiv", "hub", "github"]);
+    expect((await run("ingest", "all", "--limit", "3")).code).toBe(2);
   });
 
   test("prints JSON for read commands", async () => {

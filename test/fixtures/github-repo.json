@@ -1,0 +1,13 @@
+{
+  "id": 1429489373,
+  "name": "WeVisOne-VL",
+  "full_name": "Tencent/WeVisOne-VL",
+  "html_url": "https://github.com/Tencent/WeVisOne-VL",
+  "description": "WeVisOne-VL is a powerful VLM by the WeChat Vision Team at Tencent, unifying object-level and pixel-level perception from points and boxes to masks and alpha mattes.",
+  "stargazers_count": 299,
+  "forks_count": 26,
+  "pushed_at": "2026-10-25T10:17:41Z",
+  "updated_at": "2026-10-27T09:22:15Z",
+  "archived": false,
+  "private": false
+}

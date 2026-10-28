@@ -144,3 +144,22 @@ export const syncHubLinks = (
   ),
   sql("UPDATE papers SET hub_fetched_at = ? WHERE id = ?", [now, paperId]),
 ];
+
+/** Stores GitHub stats on every link to the repository, so each repository needs one request. */
+export const writeGithubStats = (
+  externalId: string,
+  stats: { readonly url: string; readonly stars: number; readonly pushedAt: string | null },
+  now: string,
+): Statement =>
+  sql(
+    `UPDATE links SET url = ?, popularity = ?, last_activity_at = ?, fetched_at = ?
+     WHERE kind = 'github' AND external_id = ?`,
+    [stats.url, stats.stars, stats.pushedAt, now, externalId],
+  );
+
+/** Records a fetch of a repository that is gone, so the next run does not retry it at once. */
+export const markGithubChecked = (externalId: string, now: string): Statement =>
+  sql("UPDATE links SET fetched_at = ? WHERE kind = 'github' AND external_id = ?", [
+    now,
+    externalId,
+  ]);

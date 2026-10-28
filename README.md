@@ -21,6 +21,9 @@ bun test
 
 ```sh
 bun run pwc ingest daily            # Fetch Daily Papers since the last run, then arXiv metadata
+bun run pwc ingest hub              # Fetch Hub models, datasets, and Spaces that cite papers
+bun run pwc ingest github           # Refresh GitHub stars for linked repositories
+bun run pwc ingest all              # Run the daily, hub, and github sources in sequence
 bun run pwc search "video diffusion" --since 2026-01-01
 bun run pwc show 2610.31329
 bun run pwc recent --days 3
@@ -33,10 +36,11 @@ Run `bun run pwc help <command>` for the options of a command.
 
 ## Configuration
 
-| Variable       | Use                                       | Default                      |
-| -------------- | ----------------------------------------- | ---------------------------- |
-| `PWC_DB_PATH`  | Path of the SQLite catalog                | `data/pwc.db` in the project |
-| `PWC_HF_TOKEN` | Hugging Face token for higher rate limits | Not set                      |
+| Variable           | Use                                                       | Default                      |
+| ------------------ | --------------------------------------------------------- | ---------------------------- |
+| `PWC_DB_PATH`      | Path of the SQLite catalog                                | `data/pwc.db` in the project |
+| `PWC_HF_TOKEN`     | Hugging Face token for higher rate limits                 | Not set                      |
+| `PWC_GITHUB_TOKEN` | GitHub token for 5000 requests in each hour instead of 60 | Not set                      |
 
 ## Tooling
 
