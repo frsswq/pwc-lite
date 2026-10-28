@@ -10,6 +10,8 @@ export type EmbedOptions = {
   /** Most papers to embed in this run. */
   readonly limit: number;
   readonly batchSize: number;
+  /** Only papers published on or after this `YYYY-MM-DD` date, or null for every paper. */
+  readonly publishedSince: string | null;
 };
 
 export type EmbedResult = {
@@ -20,7 +22,8 @@ export type EmbedResult = {
 
 /** A paper needs a vector when it has none, or when its vector is from another model. */
 const pending = `FROM papers p LEFT JOIN embeddings e ON e.paper_id = p.id
-  WHERE e.paper_id IS NULL OR e.model IS NOT ?`;
+  WHERE (e.paper_id IS NULL OR e.model IS NOT ?)
+    AND (? IS NULL OR coalesce(p.published_at, p.ingested_at) >= ?)`;
 
 const pendingRow = z.object({ id: z.string(), title: z.string(), abstract: z.string() });
 
@@ -30,9 +33,13 @@ const decodePending = (row: SqlRow): PendingPaper => pendingRow.parse(row);
 
 const countRow = z.object({ count: z.number().int() });
 
-export const countPendingEmbeddings = async (db: Database, model: string): Promise<number> =>
+export const countPendingEmbeddings = async (
+  db: Database,
+  model: string,
+  publishedSince: string | null = null,
+): Promise<number> =>
   (await db.first(
-    sql(`SELECT count(*) AS count ${pending}`, [model]),
+    sql(`SELECT count(*) AS count ${pending}`, [model, publishedSince, publishedSince]),
     (row) => countRow.parse(row).count,
   )) ?? 0;
 
@@ -59,7 +66,12 @@ export const embedPapers = async (
       sql(
         `SELECT p.id, p.title, p.abstract ${pending}
          ORDER BY coalesce(p.published_at, p.ingested_at) DESC, p.id LIMIT ?`,
-        [embedder.model, Math.min(options.batchSize, options.limit - embedded)],
+        [
+          embedder.model,
+          options.publishedSince,
+          options.publishedSince,
+          Math.min(options.batchSize, options.limit - embedded),
+        ],
       ),
       decodePending,
     );
@@ -95,5 +107,41 @@ export const embedPapers = async (
     embedded += papers.length;
   }
 
-  return { embedded, remaining: await countPendingEmbeddings(db, embedder.model) };
+  return {
+    embedded,
+    remaining: await countPendingEmbeddings(db, embedder.model, options.publishedSince),
+  };
+};
+
+const idRow = z.object({ paper_id: z.string() });
+
+/**
+ * Removes the vectors of papers published before `cutoff`, at most `limit` of them.
+ *
+ * The cloud catalog uses this to stay inside the Vectorize storage limit. The papers stay searchable by keywords.
+ */
+export const expireEmbeddings = async (
+  db: Database,
+  index: VectorIndex,
+  options: { readonly cutoff: string; readonly limit: number },
+): Promise<number> => {
+  const ids = await db.all(
+    sql(
+      `SELECT e.paper_id FROM embeddings e JOIN papers p ON p.id = e.paper_id
+       WHERE coalesce(p.published_at, p.ingested_at) < ? ORDER BY e.paper_id LIMIT ?`,
+      [options.cutoff, options.limit],
+    ),
+    (row) => idRow.parse(row).paper_id,
+  );
+
+  if (ids.length > 0) {
+    await index.delete(ids);
+    await db.run(
+      sql("DELETE FROM embeddings WHERE paper_id IN (SELECT value FROM json_each(?))", [
+        JSON.stringify(ids),
+      ]),
+    );
+  }
+
+  return ids.length;
 };

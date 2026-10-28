@@ -6,7 +6,7 @@ import { type Database, sql } from "../db/database";
 import { keywordEmbedder } from "../testing/embedder";
 import { openTestCatalog, paperRecord } from "../testing/catalog";
 import { createTableVectorIndex } from "../vectors/table-index";
-import { countPendingEmbeddings, embedPapers } from "./embed";
+import { countPendingEmbeddings, embedPapers, expireEmbeddings } from "./embed";
 
 const now = "2026-10-24T08:00:00.000Z";
 
@@ -33,7 +33,14 @@ describe("embedPapers", () => {
     const embedder = keywordEmbedder(["diffusion", "attention", "robot"]);
     const index = createTableVectorIndex(db, embedder.model);
 
-    expect(await embedPapers(db, embedder, index, { now, limit: 100, batchSize: 2 })).toEqual({
+    expect(
+      await embedPapers(db, embedder, index, {
+        now,
+        limit: 100,
+        batchSize: 2,
+        publishedSince: null,
+      }),
+    ).toEqual({
       embedded: 3,
       remaining: 0,
     });
@@ -49,9 +56,21 @@ describe("embedPapers", () => {
     const embedder = keywordEmbedder(["diffusion"]);
     const index = createTableVectorIndex(db, embedder.model);
 
-    await embedPapers(db, embedder, index, { now, limit: 100, batchSize: 10 });
+    await embedPapers(db, embedder, index, {
+      now,
+      limit: 100,
+      batchSize: 10,
+      publishedSince: null,
+    });
 
-    expect(await embedPapers(db, embedder, index, { now, limit: 100, batchSize: 10 })).toEqual({
+    expect(
+      await embedPapers(db, embedder, index, {
+        now,
+        limit: 100,
+        batchSize: 10,
+        publishedSince: null,
+      }),
+    ).toEqual({
       embedded: 0,
       remaining: 0,
     });
@@ -62,7 +81,14 @@ describe("embedPapers", () => {
     const embedder = keywordEmbedder(["diffusion"]);
     const index = createTableVectorIndex(db, embedder.model);
 
-    expect(await embedPapers(db, embedder, index, { now, limit: 2, batchSize: 10 })).toEqual({
+    expect(
+      await embedPapers(db, embedder, index, {
+        now,
+        limit: 2,
+        batchSize: 10,
+        publishedSince: null,
+      }),
+    ).toEqual({
       embedded: 2,
       remaining: 1,
     });
@@ -75,6 +101,7 @@ describe("embedPapers", () => {
       now,
       limit: 100,
       batchSize: 10,
+      publishedSince: null,
     });
 
     expect(await countPendingEmbeddings(db, "new-model")).toBe(3);
@@ -84,7 +111,7 @@ describe("embedPapers", () => {
 
     expect(await index.query(await current.embedQuery("diffusion"), 10)).toEqual([]);
 
-    await embedPapers(db, current, index, { now, limit: 100, batchSize: 10 });
+    await embedPapers(db, current, index, { now, limit: 100, batchSize: 10, publishedSince: null });
 
     expect((await embeddings(db)).map(({ model }) => model)).toEqual([
       "new-model",
@@ -98,7 +125,12 @@ describe("embedPapers", () => {
     const embedder = keywordEmbedder(["diffusion", "attention"]);
     const index = createTableVectorIndex(db, embedder.model);
 
-    await embedPapers(db, embedder, index, { now, limit: 100, batchSize: 10 });
+    await embedPapers(db, embedder, index, {
+      now,
+      limit: 100,
+      batchSize: 10,
+      publishedSince: null,
+    });
     await db.run(writeArxivPaper(paperRecord("2610.00001", "Video diffusion"), "hf_daily", now));
 
     expect(await countPendingEmbeddings(db, embedder.model)).toBe(0);
@@ -114,7 +146,47 @@ describe("embedPapers", () => {
     const embedder = keywordEmbedder(["diffusion"], "a");
 
     await expect(
-      embedPapers(db, embedder, createTableVectorIndex(db, "b"), { now, limit: 1, batchSize: 1 }),
+      embedPapers(db, embedder, createTableVectorIndex(db, "b"), {
+        now,
+        limit: 1,
+        batchSize: 1,
+        publishedSince: null,
+      }),
     ).rejects.toThrow("The index is for b, but the embedder is a");
+  });
+  test("embeds only papers published on or after publishedSince, and expires older vectors", async () => {
+    const embedder = keywordEmbedder(["diffusion"]);
+    const index = createTableVectorIndex(db, embedder.model);
+
+    await db.run(
+      writeListedPaper(
+        { ...paperRecord("2401.00009", "Old diffusion"), publishedAt: "2024-01-01T00:00:00.000Z" },
+        "hf_daily",
+        now,
+      ),
+    );
+
+    expect(
+      await embedPapers(db, embedder, index, {
+        now,
+        limit: 100,
+        batchSize: 10,
+        publishedSince: "2026-01-01",
+      }),
+    ).toEqual({ embedded: 3, remaining: 0 });
+    expect(await countPendingEmbeddings(db, embedder.model)).toBe(1);
+
+    await embedPapers(db, embedder, index, {
+      now,
+      limit: 100,
+      batchSize: 10,
+      publishedSince: null,
+    });
+
+    expect(await expireEmbeddings(db, index, { cutoff: "2026-01-01", limit: 10 })).toBe(1);
+    expect(
+      (await index.query(await embedder.embedQuery("diffusion"), 10)).map(({ id }) => id),
+    ).not.toContain("2401.00009");
+    expect(await countPendingEmbeddings(db, embedder.model, "2026-01-01")).toBe(0);
   });
 });

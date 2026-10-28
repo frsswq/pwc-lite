@@ -42,7 +42,12 @@ describe("createApp", () => {
       writeListedPaper(paperRecord("2610.00001", "Video diffusion"), "hf_daily", now.toISOString()),
       writeListedPaper(paperRecord("2610.00002", "Robot policies"), "hf_daily", now.toISOString()),
     ]);
-    await embedPapers(db, embedder, index, { now: now.toISOString(), limit: 10, batchSize: 10 });
+    await embedPapers(db, embedder, index, {
+      now: now.toISOString(),
+      limit: 10,
+      batchSize: 10,
+      publishedSince: null,
+    });
     app = createApp({ db, embedder, index, now: () => now });
   });
 

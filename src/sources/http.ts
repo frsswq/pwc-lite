@@ -12,7 +12,11 @@ export type HttpClient = {
 
 export const defaultHttpClient: HttpClient = {
   fetch: async (url, init) => fetch(url, init),
-  sleep: async (ms) => Bun.sleep(ms),
+  // A timer works on Bun and on Workers.
+  sleep: async (ms) =>
+    new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    }),
 };
 
 /** A source response that does not match its schema. */

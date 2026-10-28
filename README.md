@@ -5,9 +5,13 @@ It takes ideas from [huggingface/paperswithcode](https://github.com/huggingface/
 
 ## Status
 
-Phase 1 is complete: the catalog, the Daily Papers and arXiv ingest, keyword search, and the CLI.
-The design is in [issue #1](https://github.com/frsswq/pwc-lite/issues/1).
-The planned work is in the [milestones](https://github.com/frsswq/pwc-lite/milestones).
+All three phases are complete:
+
+- Phase 1: the catalog, the Daily Papers and arXiv ingest, keyword search, and the CLI.
+- Phase 2: Hub and GitHub links, semantic and hybrid search, the JSON API, the library, watches, and tasks and methods.
+- Phase 3: the Cloudflare Worker on D1, Vectorize, and Workers AI, with a scheduled ingest.
+  The design is in [issue #1](https://github.com/frsswq/pwc-lite/issues/1).
+  The planned work is in the [milestones](https://github.com/frsswq/pwc-lite/milestones).
 
 ## Setup
 
@@ -84,6 +88,13 @@ The Worker entry is `src/worker.ts`, and the bindings are in `wrangler.jsonc`.
    ```
 
 4. Deploy with `wrangler deploy`.
+
+The Worker has a Cron Trigger every 10 minutes.
+Each run does one ingest job in turn: `daily`, `arxiv`, `embed`, `hub`, `github`, `pwc`, then `maintain`.
+Each job does a small step, because the free plan allows 10 ms of CPU time and 50 subrequests for each run.
+Every job continues from the state in the database, and each run adds a row to `ingest_runs`.
+The cloud ingest does not discover papers from trending Hub models and datasets, because that step can pass the CPU limit.
+Set `HF_TOKEN` and `GITHUB_TOKEN` with `wrangler secret put` for higher rate limits.
 
 The cloud catalog keeps vectors only for papers of the last 270 days, because Vectorize on the free plan stores about 13,000 vectors of 384 dimensions.
 Issue [#17](https://github.com/frsswq/pwc-lite/issues/17) has the free plan limits.

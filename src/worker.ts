@@ -4,6 +4,12 @@ import { createWorkersAiEmbedder } from "./cloudflare/workers-ai";
 import { createD1Database } from "./db/d1";
 import { type EmbeddingModel, defaultEmbeddingModel, findEmbeddingModel } from "./embed/models";
 import { type AppDependencies, createApp } from "./http/app";
+import { hubIntervalMs } from "./ingest/hf-hub";
+import { type ScheduledRun, runScheduled } from "./scheduled/scheduled";
+import { arxivIntervalMs } from "./sources/arxiv";
+import { type HttpClient, defaultHttpClient } from "./sources/http";
+import { pwcIntervalMs } from "./sources/pwc";
+import { createRateLimiter } from "./sources/rate-limit";
 
 /** The bindings in `wrangler.jsonc`. */
 export type WorkerEnv = {
@@ -12,6 +18,33 @@ export type WorkerEnv = {
   readonly AI: AiBinding;
   /** The embedding model of the Vectorize index. The default is the local default. */
   readonly EMBED_MODEL?: string;
+  /** Secrets for higher rate limits. */
+  readonly HF_TOKEN?: string;
+  readonly GITHUB_TOKEN?: string;
+};
+
+/** Runs the next scheduled ingest job. Tests pass a fake HTTP client and clock. */
+export const handleScheduled = async (
+  env: WorkerEnv,
+  http: HttpClient,
+  now: () => Date,
+): Promise<ScheduledRun> => {
+  const deps = workerDependencies(env, now);
+
+  return runScheduled({
+    db: deps.db,
+    http,
+    embedder: deps.embedder,
+    index: deps.index,
+    limiters: {
+      arxiv: createRateLimiter(arxivIntervalMs, http.sleep),
+      hub: createRateLimiter(hubIntervalMs, http.sleep),
+      pwc: createRateLimiter(pwcIntervalMs, http.sleep),
+    },
+    hfToken: env.HF_TOKEN || null,
+    githubToken: env.GITHUB_TOKEN || null,
+    now,
+  });
 };
 
 const readModel = (env: WorkerEnv): EmbeddingModel => {
@@ -40,4 +73,7 @@ export const workerDependencies = (env: WorkerEnv, now: () => Date): AppDependen
 export default {
   fetch: async (request: Request, env: WorkerEnv): Promise<Response> =>
     createApp(workerDependencies(env, () => new Date())).fetch(request),
+  scheduled: async (_controller: { readonly cron: string }, env: WorkerEnv): Promise<void> => {
+    await handleScheduled(env, defaultHttpClient, () => new Date());
+  },
 };

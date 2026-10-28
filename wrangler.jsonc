@@ -20,5 +20,8 @@
   ],
   "vectorize": [{ "binding": "VECTORIZE", "index_name": "pwc-lite-bge-small" }],
   "ai": { "binding": "AI" },
+  // One ingest job every 10 minutes. See src/scheduled/scheduled.ts.
+  // Set the optional secrets with: wrangler secret put HF_TOKEN, wrangler secret put GITHUB_TOKEN
+  "triggers": { "crons": ["*/10 * * * *"] },
   "vars": { "EMBED_MODEL": "bge-small-en-v1.5" },
 }

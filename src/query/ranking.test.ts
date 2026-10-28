@@ -148,6 +148,7 @@ describe("rankedSearch", () => {
       now: "x",
       limit: 100,
       batchSize: 10,
+      publishedSince: null,
     });
   });
 

@@ -14,6 +14,7 @@ const options: DailyIngestOptions = {
   since: "2026-10-22",
   today: "2026-10-24",
   lookbackDays: 7,
+  maxDates: null,
   token: null,
   now: "2026-10-24T08:00:00.000Z",
 };
@@ -93,6 +94,15 @@ describe("ingestDaily", () => {
     const result = await ingestDaily(db, serveFixture().client, { ...options, since: null });
 
     expect(result.dates).toEqual(["2026-10-24"]);
+  });
+
+  test("fetches at most maxDates dates, and the next run continues after them", async () => {
+    const limited = { ...options, since: null, lookbackDays: 2, maxDates: 2 };
+    const first = await ingestDaily(db, serveFixture().client, limited);
+    const second = await ingestDaily(db, serveFixture().client, limited);
+
+    expect(first.dates).toEqual(["2026-10-22", "2026-10-23"]);
+    expect(second.dates).toEqual(["2026-10-24"]);
   });
 
   test("rejects a bad since date", async () => {

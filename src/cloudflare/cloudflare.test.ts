@@ -85,6 +85,7 @@ const seed = async (db: Database) => {
     now,
     limit: 100,
     batchSize: 10,
+    publishedSince: null,
   });
 };
 

@@ -18,6 +18,7 @@ export const embedCommand: Command = {
       now: context.now().toISOString(),
       limit: readPositiveInt("limit", values.limit, 100_000),
       batchSize,
+      publishedSince: null,
     });
 
     context.stdout(

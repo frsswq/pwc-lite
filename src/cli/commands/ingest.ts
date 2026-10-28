@@ -31,6 +31,7 @@ const runDaily = async (values: IngestValues, context: CliContext, db: Database)
     since: readDate("since", values.since),
     today: utcDate(now),
     lookbackDays: readPositiveInt("lookback", values.lookback, 7),
+    maxDates: null,
     token: context.config.hfToken,
     now: now.toISOString(),
   });

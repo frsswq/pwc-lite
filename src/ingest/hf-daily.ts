@@ -14,6 +14,8 @@ export type DailyIngestOptions = {
   readonly today: string;
   /** Days before `today` to fetch when there is no cursor and no `since`. */
   readonly lookbackDays: number;
+  /** Most dates to fetch in this run, or null for every date up to `today`. The next run continues after the cursor. */
+  readonly maxDates: number | null;
   readonly token: string | null;
   /** Current instant as ISO 8601 text. */
   readonly now: string;
@@ -54,7 +56,8 @@ export const ingestDaily = async (
   }
 
   const start = await startDate(db, options);
-  const dates = start <= options.today ? dateRange(start, options.today) : [options.today];
+  const allDates = start <= options.today ? dateRange(start, options.today) : [options.today];
+  const dates = options.maxDates === null ? allDates : allDates.slice(0, options.maxDates);
   const skippedIds: string[] = [];
   let papers = 0;
   let changes = 0;

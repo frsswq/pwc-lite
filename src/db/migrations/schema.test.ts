@@ -56,6 +56,7 @@ describe("schema", () => {
     expect(objects).toEqual([
       "index:concept_fetches_fetched_at",
       "index:embeddings_model",
+      "index:ingest_runs_started_at",
       "index:links_kind_external_id",
       "index:paper_concepts_concept_id",
       "index:paper_tags_tag_id",
@@ -68,6 +69,7 @@ describe("schema", () => {
       "table:concepts",
       "table:embeddings",
       "table:ingest_cursors",
+      "table:ingest_runs",
       "table:library",
       "table:links",
       "table:paper_concepts",
